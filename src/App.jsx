@@ -335,6 +335,8 @@ const QUESTIONS_RAW = [
 
 const QUESTIONS = QUESTIONS_RAW.map((q, i) => ({ ...q, id: i + 1 }));
 
+const ROUND_SIZE = 7;
+
 // ══════════════════════════════════════════════════════════════
 // 5. ランク定義 & XPユーティリティ
 // ══════════════════════════════════════════════════════════════
@@ -503,7 +505,7 @@ function CourtAnim({ scene, animKey, showSub = false }) {
   );
 
   return (
-    <div style={{position:"relative",width:"100%",paddingBottom:"76%",borderRadius:12,overflow:"hidden",userSelect:"none"}}>
+    <div style={{position:"relative",width:"100%",paddingBottom:"60%",borderRadius:12,overflow:"hidden",userSelect:"none"}}>
       <svg
         style={{position:"absolute",inset:0,width:"100%",height:"100%"}}
         viewBox="0 0 300 230"
@@ -653,12 +655,12 @@ function CourtAnim({ scene, animKey, showSub = false }) {
 function SoftKeyboard({ onKey, onSubmit }) {
   const [hint, setHint] = useState(null);
   return (
-    <div style={{background:"#070d18",borderTop:`1px solid ${C.border}`,padding:"5px 6px 10px",flexShrink:0}}>
-      <div style={{height:15,marginBottom:4,textAlign:"center",fontSize:10,fontFamily:"monospace",letterSpacing:1,color:hint?C.cyan:"transparent",transition:"color 0.15s"}}>
+    <div style={{background:"#070d18",borderTop:`1px solid ${C.border}`,padding:"3px 6px 6px",flexShrink:0}}>
+      <div style={{height:12,marginBottom:3,textAlign:"center",fontSize:10,fontFamily:"monospace",letterSpacing:1,color:hint?C.cyan:"transparent",transition:"color 0.15s"}}>
         {hint || "　"}
       </div>
       {KB_ROWS.map((row,ri) => (
-        <div key={ri} style={{display:"flex",gap:4,marginBottom:4,justifyContent:"center"}}>
+        <div key={ri} style={{display:"flex",gap:3,marginBottom:3,justifyContent:"center"}}>
           {row.map((k,ki) => {
             const isBs    = k.value === "BS";
             const isSp    = k.value === " ";
@@ -676,9 +678,9 @@ function SoftKeyboard({ onKey, onSubmit }) {
                 onPointerUp={() => setTimeout(() => setHint(null), 900)}
                 style={{
                   flex: k.wide ? 2 : 1,
-                  minWidth: k.wide ? 52 : 28,
-                  maxWidth: k.wide ? 76 : 48,
-                  height:42,
+                  minWidth: k.wide ? 48 : 26,
+                  maxWidth: k.wide ? 70 : 44,
+                  height:36,
                   background: isBs ? "rgba(255,51,68,0.1)" : isUtil ? "rgba(255,255,255,0.04)" : isHex ? `${k.color}18` : "rgba(255,255,255,0.05)",
                   border:`1px solid ${isBs ? "rgba(255,51,68,0.35)" : isUtil ? C.border : isHex ? `${k.color}55` : C.border}`,
                   borderRadius:7,
@@ -972,6 +974,38 @@ function ResultScreen({ result, q, streak, onNext, onHome }) {
   );
 }
 
+function RoundReviewScreen({ roundData, streak, onContinue, onHome }) {
+  const pct = Math.round((roundData.correct / ROUND_SIZE) * 100);
+  const msg = pct >= 80 ? "素晴らしい！この調子で次も！" : pct >= 60 ? "まずまず。次は完璧を目指そう！" : "復習して次に挑戦しよう！";
+  const icon = pct >= 80 ? "🏆" : pct >= 60 ? "🎯" : "📋";
+  return (
+    <div style={{flex:1,overflowY:"auto",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"28px 20px",gap:14,animation:"fadeIn 0.4s ease"}}>
+      <div style={{fontSize:52,animation:"pop 0.4s ease"}}>{icon}</div>
+      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:30,letterSpacing:5,color:C.yellow}}>ROUND {roundData.num} 完了</div>
+      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:48,letterSpacing:3}}>
+        <span style={{color:pct>=80?C.green:pct>=60?C.yellow:C.orange}}>{roundData.correct}</span>
+        <span style={{color:C.muted,fontSize:22}}> / {ROUND_SIZE}</span>
+      </div>
+      <div style={{fontSize:11,color:C.muted,fontFamily:"monospace",letterSpacing:1}}>正解率 {pct}%</div>
+      {roundData.xpGained > 0 && (
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,107,53,0.12)",border:`1px solid ${C.orange}`,borderRadius:20,padding:"5px 18px",fontSize:14,color:C.orange,fontFamily:"monospace"}}>
+          ⚡ +{roundData.xpGained} XP
+        </div>
+      )}
+      {streak >= 3 && (
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,107,53,0.08)",border:`1px solid ${C.orange}`,borderRadius:20,padding:"3px 14px",fontSize:12,color:C.orange,fontFamily:"monospace"}}>
+          🔥 ストリーク継続中 ×{streak}
+        </div>
+      )}
+      <div style={{fontSize:13,color:"rgba(220,235,255,0.7)",textAlign:"center",lineHeight:1.8,background:C.surface2,padding:"12px 16px",borderRadius:8,border:`1px solid ${C.border}`,maxWidth:280}}>{msg}</div>
+      <button onClick={onContinue} style={{padding:"14px 0",width:"100%",maxWidth:260,background:`linear-gradient(135deg,${C.orange},#e65100)`,border:"none",borderRadius:10,color:"white",fontWeight:900,fontSize:15,letterSpacing:3,cursor:"pointer",fontFamily:"'Noto Sans JP',sans-serif"}}>
+        次のクールへ →
+      </button>
+      <button onClick={onHome} style={{background:"transparent",border:"none",color:"rgba(220,235,255,0.25)",cursor:"pointer",fontSize:11,fontFamily:"monospace",letterSpacing:1}}>ホームに戻る</button>
+    </div>
+  );
+}
+
 function GameScreen({ q, qs, qIndex, input, shake, streak, score, animKey, xpAnim, unlockAnim, onKey, onSubmit, onClearInput, onHome }) {
   const qNum = (qIndex % qs.length) + 1;
   return (
@@ -992,7 +1026,7 @@ function GameScreen({ q, qs, qIndex, input, shake, streak, score, animKey, xpAni
       )}
 
       {/* ヘッダー */}
-      <div style={{background:C.surface,padding:"9px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:`1px solid ${C.border}`,flexShrink:0}}>
+      <div style={{background:C.surface,padding:"6px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:`1px solid ${C.border}`,flexShrink:0}}>
         <button onClick={onHome} style={{background:"transparent",border:"none",color:C.muted,cursor:"pointer",fontSize:18,padding:"4px 6px"}}>←</button>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <span style={{fontFamily:"monospace",fontSize:11,color:C.muted}}>Q.{qNum}<span style={{color:"rgba(220,235,255,0.2)"}}>/{qs.length}</span></span>
@@ -1007,7 +1041,7 @@ function GameScreen({ q, qs, qIndex, input, shake, streak, score, animKey, xpAni
       </div>
 
       {/* コンテンツ */}
-      <div style={{flex:1,overflowY:"auto",padding:"8px 12px",display:"flex",flexDirection:"column",gap:8}}>
+      <div style={{flex:1,overflowY:"auto",padding:"6px 10px",display:"flex",flexDirection:"column",gap:6}}>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <span style={{padding:"3px 10px",borderRadius:20,border:`1px solid ${SKILL_COLOR[q.skill]}`,color:SKILL_COLOR[q.skill],fontSize:10,fontFamily:"monospace",letterSpacing:2}}>{q.skill} — {SKILL_LABEL[q.skill]}</span>
           <span style={{fontSize:10,color:C.muted,fontFamily:"monospace"}}>Lv.{q.level}</span>
@@ -1063,6 +1097,7 @@ export default function VolleyCoder() {
   const [animKey,     setAnimKey]     = useState(0);
   const [shake,       setShake]       = useState(false);
   const [rq,          setRq]          = useState(null);
+  const [roundData,   setRoundData]   = useState({ num:1, correct:0, xpGained:0, count:0 });
 
   const maxUnlockedLevel = getMaxUnlockedLevel(xp);
   const prevMaxLevel = useRef(maxUnlockedLevel);
@@ -1127,11 +1162,22 @@ export default function VolleyCoder() {
       setTimeout(() => setShake(false), 400);
     }
     setStats(p => ({ ...p, [q.id]: correct }));
+    setRoundData(r => ({ ...r, correct: r.correct + (correct?1:0), xpGained: r.xpGained + gainXp, count: r.count + 1 }));
     setResult({ correct, codeStr: input, gainXp });
   }, [input, q, rq, streak]);
 
   const handleNext = useCallback(() => {
     setInput(""); setResult(null);
+    if (roundData.count > 0 && roundData.count % ROUND_SIZE === 0) {
+      setScreen("roundReview");
+    } else {
+      setQIndex(i => i + 1);
+      setScreen("game");
+    }
+  }, [roundData.count]);
+
+  const handleContinueRound = useCallback(() => {
+    setRoundData(r => ({ num: r.num + 1, correct: 0, xpGained: 0, count: 0 }));
     setQIndex(i => i + 1);
     setScreen("game");
   }, []);
@@ -1139,6 +1185,7 @@ export default function VolleyCoder() {
   const handleStart = useCallback(() => {
     setQIndex(0); setScore(0); setStreak(0);
     setInput(""); setResult(null); setRq(null);
+    setRoundData({ num:1, correct:0, xpGained:0, count:0 });
     setScreen("game");
   }, []);
 
@@ -1168,6 +1215,13 @@ export default function VolleyCoder() {
 
   if (screen === "ref") return shell(
     <ReferenceScreen onBack={() => setScreen("home")} />
+  );
+
+  if (screen === "roundReview") return shell(
+    <RoundReviewScreen
+      roundData={roundData} streak={streak}
+      onContinue={handleContinueRound} onHome={() => setScreen("home")}
+    />
   );
 
   if (result) return shell(
