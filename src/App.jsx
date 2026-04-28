@@ -118,7 +118,7 @@ const QUESTIONS_RAW = [
   {skill:"A",level:1,
    players:{A:5},
    scene:{
-     desc:"{A}番がレフト前衛（ゾーン4）からスパイクを打って得点！",
+     desc:"{A}番がスパイクを打って得点！",
      ball:[{fx:70,fy:128,tx:110,ty:66,spike:true}],
      actors:[{n:"A",side:"home",x:70,y:126,jump:true}],
      hlHome:[4],hlAway:[],result:"ace",
@@ -140,7 +140,7 @@ const QUESTIONS_RAW = [
   {skill:"E",level:1,
    players:{A:10},
    scene:{
-     desc:"セッター{A}番がセンター（ゾーン8）からトスを上げた。",
+     desc:"セッター{A}番がトスを上げた。",
      ball:[{fx:150,fy:162,tx:150,ty:130},{fx:150,fy:130,tx:70,ty:130}],
      actors:[{n:"A",side:"home",x:150,y:162}],
      hlHome:[8],hlAway:[],
@@ -151,7 +151,7 @@ const QUESTIONS_RAW = [
   {skill:"D",level:1,
    players:{A:8},
    scene:{
-     desc:"相手スパイクを自チーム{A}番（センター）がディグした。",
+     desc:"相手スパイクを自チーム{A}番がディグした。",
      ball:[{fx:230,fy:98,tx:150,ty:162},{fx:150,fy:162,tx:150,ty:145}],
      actors:[{n:"A",side:"home",x:150,y:160},{n:4,side:"away",x:230,y:98,jump:true}],
      hlHome:[8],hlAway:[],
@@ -505,12 +505,13 @@ function CourtAnim({ scene, animKey, showSub = false }) {
   );
 
   return (
-    <div style={{position:"relative",width:"100%",paddingBottom:"60%",borderRadius:12,overflow:"hidden",userSelect:"none"}}>
-      <svg
-        style={{position:"absolute",inset:0,width:"100%",height:"100%"}}
-        viewBox="0 0 300 230"
-        preserveAspectRatio="xMidYMid meet"
-      >
+    <div style={{userSelect:"none"}}>
+      <div style={{position:"relative",width:"100%",paddingBottom:"70%",borderRadius:12,overflow:"hidden"}}>
+        <svg
+          style={{position:"absolute",inset:0,width:"100%",height:"100%"}}
+          viewBox="0 0 300 230"
+          preserveAspectRatio="xMidYMid meet"
+        >
         <defs>
           <linearGradient id="cg1" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%"   stopColor="#1a3a6e" stopOpacity="0.6"/>
@@ -629,20 +630,24 @@ function CourtAnim({ scene, animKey, showSub = false }) {
             <text x="0" y="6" textAnchor="middle" fontSize="14">🏐</text>
           </g>
         )}
-      </svg>
-
+        </svg>
+      </div>
       {/* 結果バッジ */}
       {phase >= 2 && scene.result && (
         <div style={{
-          position:"absolute",top:8,right:8,
-          padding:"3px 10px",borderRadius:20,
-          fontSize:10,fontFamily:"monospace",letterSpacing:1,
-          background: scene.result==="ace" ? "rgba(0,255,136,0.2)" : scene.result==="miss" ? "rgba(255,51,68,0.2)" : "rgba(255,214,10,0.2)",
-          border:`1px solid ${scene.result==="ace" ? C.green : scene.result==="miss" ? C.red : C.yellow}`,
-          color: scene.result==="ace" ? C.green : scene.result==="miss" ? C.red : C.yellow,
-          animation:"fadeIn 0.3s ease",pointerEvents:"none",
+          textAlign:"right",marginTop:4,
+          animation:"fadeIn 0.3s ease",
         }}>
-          {scene.result==="ace" ? "POINT! 🎉" : scene.result==="miss" ? "MISS! ❌" : "GOOD! ⭐"}
+          <span style={{
+            display:"inline-block",
+            padding:"2px 10px",borderRadius:20,
+            fontSize:10,fontFamily:"monospace",letterSpacing:1,
+            background: scene.result==="ace" ? "rgba(0,255,136,0.2)" : scene.result==="miss" ? "rgba(255,51,68,0.2)" : "rgba(255,214,10,0.2)",
+            border:`1px solid ${scene.result==="ace" ? C.green : scene.result==="miss" ? C.red : C.yellow}`,
+            color: scene.result==="ace" ? C.green : scene.result==="miss" ? C.red : C.yellow,
+          }}>
+            {scene.result==="ace" ? "POINT! 🎉" : scene.result==="miss" ? "MISS! ❌" : "GOOD! ⭐"}
+          </span>
         </div>
       )}
     </div>
