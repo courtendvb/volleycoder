@@ -52,6 +52,7 @@ const KB_ROWS = [
     {label:"/",value:"/",color:C.cyan,   hint:"ブロックアウト"},
     {label:".",value:".",color:C.muted,  hint:"区切り"},
     {label:"~",value:"~",color:C.muted,  hint:"フリー"},
+    {label:"↵",value:"ENTER",color:C.green,hint:"確定",wide:true},
   ],
 ];
 
@@ -649,7 +650,7 @@ function CourtAnim({ scene, animKey, showSub = false }) {
 // ══════════════════════════════════════════════════════════════
 // 9. SoftKeyboard コンポーネント
 // ══════════════════════════════════════════════════════════════
-function SoftKeyboard({ onKey }) {
+function SoftKeyboard({ onKey, onSubmit }) {
   const [hint, setHint] = useState(null);
   return (
     <div style={{background:"#070d18",borderTop:`1px solid ${C.border}`,padding:"5px 6px 10px",flexShrink:0}}>
@@ -659,21 +660,27 @@ function SoftKeyboard({ onKey }) {
       {KB_ROWS.map((row,ri) => (
         <div key={ri} style={{display:"flex",gap:4,marginBottom:4,justifyContent:"center"}}>
           {row.map((k,ki) => {
-            const isBs   = k.value === "BS";
-            const isSp   = k.value === " ";
-            const isUtil = isBs || isSp;
+            const isBs    = k.value === "BS";
+            const isSp    = k.value === " ";
+            const isEnter = k.value === "ENTER";
+            const isUtil  = isBs || isSp;
+            const isHex   = k.color && k.color.startsWith("#");
             return (
               <button
                 key={ki}
-                onPointerDown={() => { onKey(k.value); if (k.hint) setHint(k.hint); }}
+                onPointerDown={() => {
+                  if (isEnter) { onSubmit?.(); }
+                  else { onKey(k.value); }
+                  if (k.hint) setHint(k.hint);
+                }}
                 onPointerUp={() => setTimeout(() => setHint(null), 900)}
                 style={{
                   flex: k.wide ? 2 : 1,
                   minWidth: k.wide ? 52 : 28,
                   maxWidth: k.wide ? 76 : 48,
                   height:42,
-                  background: isBs ? "rgba(255,51,68,0.1)" : isUtil ? "rgba(255,255,255,0.04)" : `${k.color}18`,
-                  border:`1px solid ${isBs ? "rgba(255,51,68,0.35)" : isUtil ? C.border : `${k.color}55`}`,
+                  background: isBs ? "rgba(255,51,68,0.1)" : isUtil ? "rgba(255,255,255,0.04)" : isHex ? `${k.color}18` : "rgba(255,255,255,0.05)",
+                  border:`1px solid ${isBs ? "rgba(255,51,68,0.35)" : isUtil ? C.border : isHex ? `${k.color}55` : C.border}`,
                   borderRadius:7,
                   color:k.color || C.text,
                   fontFamily:"'JetBrains Mono',monospace",
@@ -683,7 +690,7 @@ function SoftKeyboard({ onKey }) {
                   display:"flex",alignItems:"center",justifyContent:"center",
                   WebkitTapHighlightColor:"transparent",
                   padding:0,
-                  boxShadow: isUtil ? "none" : `0 2px 6px ${k.color}20`,
+                  boxShadow: (isUtil || !isHex) ? "none" : `0 2px 6px ${k.color}20`,
                 }}
               >{k.label}</button>
             );
@@ -706,7 +713,6 @@ function HomeScreen({ score, maxStreak, xp, rank, xpPct, nextRank, levelFilter, 
       <div style={{position:"relative",zIndex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 20px",gap:11,minHeight:"100%",animation:"fadeIn 0.5s ease"}}>
         <div style={{fontSize:50,animation:"float 2.8s ease-in-out infinite",filter:"drop-shadow(0 0 16px rgba(255,107,53,0.7))"}}>🏐</div>
         <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:46,letterSpacing:6,lineHeight:1,textAlign:"center"}}>
-          <span style={{color:C.yellow}}>Volle</span><span style={{color:C.orange}}>Coder</span>
           <span style={{color:C.yellow}}>Volley</span><span style={{color:C.orange}}>Coder</span>
         </div>
         <div style={{fontSize:10,color:C.muted,letterSpacing:3,textTransform:"uppercase",fontFamily:"monospace"}}>データバレー コーディング練習</div>
@@ -1026,7 +1032,7 @@ function GameScreen({ q, qs, qIndex, input, shake, streak, score, animKey, xpAni
         </div>
       </div>
 
-      <SoftKeyboard onKey={onKey}/>
+      <SoftKeyboard onKey={onKey} onSubmit={onSubmit}/>
     </>
   );
 }
