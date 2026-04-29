@@ -716,7 +716,7 @@ function HomeScreen({ score, maxStreak, xp, rank, xpPct, nextRank, levelFilter, 
   return (
     <div style={{flex:1,overflowY:"auto"}}>
       <div style={{position:"fixed",inset:0,backgroundImage:"repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(0,212,255,0.04) 39px,rgba(0,212,255,0.04) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(0,212,255,0.04) 39px,rgba(0,212,255,0.04) 40px)",pointerEvents:"none",zIndex:0}}/>
-      <div style={{position:"fixed",top:"43%",left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,rgba(0,212,255,0.3),transparent)",pointerEvents:"none",zIndex:0}}/>
+
       <div style={{position:"relative",zIndex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 20px",gap:11,minHeight:"100%",animation:"fadeIn 0.5s ease"}}>
         <div style={{fontSize:50,animation:"float 2.8s ease-in-out infinite",filter:"drop-shadow(0 0 16px rgba(255,107,53,0.7))"}}>🏐</div>
         <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:46,letterSpacing:6,lineHeight:1,textAlign:"center"}}>
