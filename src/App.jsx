@@ -32,6 +32,7 @@ const KB_ROWS = [
   ],
   [
     {label:"S",value:"S",color:C.orange,  hint:"サーブ"},
+    {label:"R",value:"R",color:"#38bdf8", hint:"レセプション"},
     {label:"A",value:"A",color:C.yellow,  hint:"アタック/Aクイック(PA)"},
     {label:"E",value:"E",color:C.purple,  hint:"トス"},
     {label:"B",value:"B",color:C.green,   hint:"ブロック/Bクイック(PB)"},
