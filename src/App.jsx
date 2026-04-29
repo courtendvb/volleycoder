@@ -20,7 +20,7 @@ const KB_ROWS = [
   [
     {label:"a",  value:"a",  color:C.purple, hint:"相手チーム"},
     {label:"*",  value:"*",  color:C.muted,  hint:"自チーム(明示)"},
-    {label:"SP", value:" ",  color:C.muted,  hint:"スペース(区切り)", wide:true},
+    {label:"SPC", value:" ", color:C.cyan,   hint:"スペース（コード区切り）", wide:true},
     {label:"⌫",  value:"BS", color:C.red,    hint:"削除", wide:true},
   ],
   [
@@ -362,6 +362,42 @@ const QUESTIONS_RAW = [
    },
    answer:"{A}SM.{B}+",variants:["{A}SM.{B}+"],
    explanation:"{A}SM.{B}+ → CODE1: {A}SM（{A}番J.フローター） / CODE2: a{B}R+（相手{B}番の優れたレセプション）。S系は「.」後がR（レセプション）になる。"},
+
+  {skill:"S",level:4,
+   multiCode:true,
+   players:{A:1,B:3,C:4,D:6},
+   scene:{
+     desc:"{A}番がサーブを打ち、相手{B}番がレセプション（評価#）。続いて相手{C}番がレフト平行を打ち、味方{D}番がブロックミス。2つのコードをスペースで区切って入力せよ。",
+     ball:[{fx:240,fy:220,tx:150,ty:70},{fx:150,fy:70,tx:240,ty:180}],
+     actors:[{n:"A",side:"home",x:240,y:218,jump:false},{n:"B",side:"away",x:150,y:68},{n:"C",side:"away",x:180,y:80,jump:true},{n:"D",side:"home",x:200,y:190}],
+     hlHome:[3],hlAway:[6,8],result:"bad",
+   },
+   answer:"a{B}R# a{C}PV.{D}=",variants:["a{B}R# a{C}PV.{D}="],
+   explanation:"CODE1: a{B}R#（相手{B}番のパーフェクトレセプション） / CODE2: a{C}PV.{D}=（相手{C}番のレフト平行→味方{D}番がブロックミス）。2つのコードはスペースで区切る。"},
+
+  {skill:"A",level:4,
+   multiCode:true,
+   players:{A:5,B:2,C:7,D:9},
+   scene:{
+     desc:"{A}番がジャンプサーブを打ち、相手{B}番がレセプション（評価-）。続いて相手{C}番がライト平行を打ち、味方{D}番がブロックアウト。2つのコードをスペースで区切って入力せよ。",
+     ball:[{fx:245,fy:215,tx:150,ty:75},{fx:150,fy:75,tx:250,ty:190}],
+     actors:[{n:"A",side:"home",x:245,y:212,jump:true},{n:"B",side:"away",x:150,y:73},{n:"C",side:"away",x:170,y:85,jump:true},{n:"D",side:"home",x:220,y:185}],
+     hlHome:[1,4],hlAway:[5,7],result:"bad",
+   },
+   answer:"a{B}R- a{C}PZ.{D}/",variants:["a{B}R- a{C}PZ.{D}/"],
+   explanation:"CODE1: a{B}R-（相手{B}番のやや悪いレセプション） / CODE2: a{C}PZ.{D}/（相手{C}番のライト平行→味方{D}番がブロックアウト）。"},
+
+  {skill:"B",level:4,
+   multiCode:true,
+   players:{A:2,B:8,C:6,D:4},
+   scene:{
+     desc:"{A}番がジャンプフローターサーブを打ち、相手{B}番がレセプション（評価!）。続いて相手{C}番がAクイックを打ち、味方{D}番がブロック決定。2つのコードをスペースで区切って入力せよ。",
+     ball:[{fx:242,fy:218,tx:155,ty:72},{fx:155,fy:72,tx:200,ty:185}],
+     actors:[{n:"A",side:"home",x:242,y:215,jump:true},{n:"B",side:"away",x:155,y:70},{n:"C",side:"away",x:175,y:82,jump:true},{n:"D",side:"home",x:205,y:183}],
+     hlHome:[2,5],hlAway:[6,9],result:"good",
+   },
+   answer:"a{B}R! a{C}PA.{D}#",variants:["a{B}R! a{C}PA.{D}#"],
+   explanation:"CODE1: a{B}R!（相手{B}番の普通レセプション） / CODE2: a{C}PA.{D}#（相手{C}番のAクイック→味方{D}番がブロック決定）。"},
 ];
 
 const QUESTIONS = QUESTIONS_RAW.map((q, i) => ({ ...q, id: i + 1 }));
@@ -549,7 +585,7 @@ function CourtAnim({ scene, animKey, showSub = false }) {
 
   return (
     <div style={{userSelect:"none"}}>
-      <div style={{position:"relative",width:"100%",paddingBottom:"70%",borderRadius:12,overflow:"hidden"}}>
+      <div style={{position:"relative",width:"100%",paddingBottom:"60%",borderRadius:12,overflow:"hidden"}}>
         <svg
           style={{position:"absolute",inset:0,width:"100%",height:"100%"}}
           viewBox="0 0 300 230"
@@ -713,7 +749,7 @@ function SoftKeyboard({ onKey, onSubmit }) {
             const isBs    = k.value === "BS";
             const isSp    = k.value === " ";
             const isEnter = k.value === "ENTER";
-            const isUtil  = isBs || isSp;
+            const isUtil  = isBs;
             const isHex   = k.color && k.color.startsWith("#");
             return (
               <button
