@@ -1268,11 +1268,11 @@ export default function VolleyCoder() {
   }, []);
 
   const handleStart = useCallback(() => {
-    setQIndex(0); setScore(0); setStreak(0);
+    setQIndex(Math.floor(Math.random() * qs.length)); setScore(0); setStreak(0);
     setInput(""); setResult(null); setRq(null);
     setRoundData({ num:1, correct:0, xpGained:0, count:0 });
     setScreen("game");
-  }, []);
+  }, [qs]);
 
   const shell = (children) => (
     <div style={{fontFamily:"'Noto Sans JP',sans-serif",background:C.bg,color:C.text,height:"100vh",display:"flex",flexDirection:"column",maxWidth:480,margin:"0 auto",overflow:"hidden"}}>
