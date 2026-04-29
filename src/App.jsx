@@ -896,6 +896,7 @@ export default function VolleyCoder() {
   const [shake,       setShake]       = useState(false);
   const [rq,          setRq]          = useState(null);
   const [roundData,   setRoundData]   = useState({ num:1, correct:0, xpGained:0, count:0 });
+  const [qOrder,      setQOrder]      = useState([]);
 
   const maxUnlockedLevel = getMaxUnlockedLevel(xp);
   const prevMaxLevel = useRef(maxUnlockedLevel);
@@ -915,7 +916,7 @@ export default function VolleyCoder() {
 
   const safeLevelFilter  = Math.min(levelFilter, maxUnlockedLevel);
   const qs       = QUESTIONS.filter(q => q.level <= safeLevelFilter);
-  const q        = qs[qIndex % qs.length];
+  const q        = qOrder.length > 0 ? qs[qOrder[qIndex % qOrder.length]] : qs[0];
   const rank     = getRank(xp);
   const nextRank = getNextRank(xp);
   const xpPct    = nextRank ? Math.round(((xp - rank.xpReq) / (nextRank.xpReq - rank.xpReq)) * 100) : 100;
@@ -935,6 +936,9 @@ export default function VolleyCoder() {
     if (screen === "game") {
       setAnimKey(k => k + 1);
       setRq(randomizeQuestion(q));
+      if (qOrder.length > 0 && qIndex > 0 && qIndex % qOrder.length === 0) {
+        setQOrder(shuffleIndices(qs.length));
+      }
     }
   }, [screen, qIndex]);
 
@@ -980,8 +984,19 @@ export default function VolleyCoder() {
     setScreen("game");
   }, []);
 
+  const shuffleIndices = (len) => {
+    const arr = Array.from({length: len}, (_, i) => i);
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  };
+
   const handleStart = useCallback(() => {
-    setQIndex(Math.floor(Math.random() * qs.length)); setScore(0); setStreak(0);
+    const order = shuffleIndices(qs.length);
+    setQOrder(order);
+    setQIndex(0); setScore(0); setStreak(0);
     setInput(""); setResult(null); setRq(null);
     setRoundData({ num:1, correct:0, xpGained:0, count:0 });
     setScreen("game");
