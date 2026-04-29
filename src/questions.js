@@ -298,7 +298,7 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[1],
    },
    answer:"a{A}S.{B}!",variants:["a{A}S.{B}!","a{A}S.{B}"],
-   explanation:"a{A}S.{B}! → CODE1: a{A}S（相手{A}番サーブ）/ CODE2: {B}R!（自チーム{B}番の普通レシーブ）。"},
+   explanation:"a{A}S.{B}! → CODE1: a{A}SH（相手{A}番サーブ）/ CODE2: *{B}RH!（自チーム{B}番の普通レセプション）。"},
 
   {skill:"S",level:3,
    compound:true,
@@ -310,7 +310,7 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[6],result:"good",
    },
    answer:"a{A}S.{B}+",variants:["a{A}S.{B}+"],
-   explanation:"a{A}S.{B}+ → CODE1: a{A}S / CODE2: {B}R+（自チーム{B}番の優れたレセプション）。"},
+   explanation:"a{A}S.{B}+ → CODE1: a{A}SH / CODE2: *{B}RH+（自チーム{B}番の優れたレセプション）。"},
 
   {skill:"S",level:3,
    compound:true,
@@ -322,7 +322,20 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[6],result:"miss",
    },
    answer:"a{A}S.{B}=",variants:["a{A}S.{B}="],
-   explanation:"a{A}S.{B}= → CODE1: a{A}S / CODE2: {B}R=（自チーム{B}番のレセプションミス）。相手サーブエースと同義。"},
+   explanation:"a{A}S.{B}= → CODE1: a{A}SH / CODE2: *{B}RH=（自チーム{B}番のレセプションミス）。相手サーブエースと同義。"},
+
+{skill:"S",level:3, compound:true,
+   players:{A:12,B:7},
+   scene:{
+     desc:"相手{A}番がサーブを打ち、自チーム{B}番がレシーブをそのまま相手コートに返してしまった（オーバーパス）。コンパウンドで入力せよ。",
+     ball:[{fx:150,fy:15,tx:150,ty:195},{fx:150,fy:195,tx:150,ty:34}],
+     actors:[{n:"A",side:"away",x:150,y:18},{n:"B",side:"home",x:150,y:193}],
+     hlHome:[6],hlAway:[6], result:"miss"
+   },
+   answer:"a{A}S.{B}/", variants:["a{A}S.{B}/"],
+   explanation:"a{A}S.{B}/ → CODE1: a{A}SH / CODE2: *{B}RH/（自チーム{B}番のオーバーパス）。R/ = レセプションがそのまま相手コートへ返ってしまった。"},
+
+
 
   {skill:"S",level:3,
    compound:true,
@@ -334,7 +347,7 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[6],result:"ace",
    },
    answer:"{A}S.{B}=",variants:["{A}S.{B}="],
-   explanation:"{A}S.{B}= → CODE1: {A}S / CODE2: a{B}R=（相手{B}番のレセプションミス）。サーブエースと同義。"},
+   explanation:"{A}S.{B}= → CODE1: *{A}SH / CODE2: a{B}RH=（相手{B}番のレセプションミス）。サーブエースと同義。"},
 
   {skill:"A",level:3,
    compound:true,
@@ -346,7 +359,7 @@ const QUESTIONS_RAW = [
      hlHome:[4],hlAway:[8],result:"ace",
    },
    answer:"{A}A.{B}#",variants:["{A}A.{B}#"],
-   explanation:"{A}A.{B}# → CODE1: {A}A/（ブロックされた）/ CODE2: a{B}B#（ブロック決定）。"},
+   explanation:"{A}A.{B}# → CODE1: *{A}AH/（ブロックされた）/ CODE2: a{B}BH#（相手{B}番ブロック決定）。"},
 
   {skill:"A",level:3,
    compound:true,
@@ -358,7 +371,7 @@ const QUESTIONS_RAW = [
      hlHome:[2],hlAway:[8],
    },
    answer:"{A}A.{B}D",variants:["{A}A.{B}D","{A}A.{B}D!"],
-   explanation:"{A}A.{B}D → CODE1: {A}A / CODE2: a{B}D（相手{B}番のディグ）。"},
+   explanation:"{A}A.{B}D → CODE1: *{A}AH / CODE2: a{B}DH（相手{B}番のディグ）。"},
 
   {skill:"A",level:3,
    compound:true,
@@ -370,7 +383,7 @@ const QUESTIONS_RAW = [
      hlHome:[3],hlAway:[1],result:"ace",
    },
    answer:"{A}PA1.{B}#",variants:["{A}PA1.{B}#"],
-   explanation:"{A}PA1.{B}# → CODE1: {A}PA1/（Aクイックがブロックされた）/ CODE2: a{B}B#（相手{B}番ブロック決定）。"},
+   explanation:"{A}PA1.{B}# → CODE1: *{A}PA1/（Aクイックがブロックされた）/ CODE2: a{B}BH#（相手{B}番ブロック決定）。"},
 
   {skill:"S",level:3,
    compound:true,
@@ -382,7 +395,7 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[8],result:"good",
    },
    answer:"{A}S.{B}#",variants:["{A}S.{B}#"],
-   explanation:"{A}S.{B}# → CODE1: {A}S / CODE2: a{B}R#（相手{B}番のパーフェクトレセプション）。"},
+   explanation:"{A}S.{B}# → CODE1: *{A}SH / CODE2: a{B}RH#（相手{B}番のパーフェクトレセプション）。"},
 
   {skill:"S",level:3,
    compound:true,
@@ -394,7 +407,7 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[8],result:"good",
    },
    answer:"{A}S.{B}+",variants:["{A}S.{B}+"],
-   explanation:"{A}S.{B}+ → CODE1: {A}S / CODE2: a{B}R+（相手{B}番の優れたレセプション）。"},
+   explanation:"{A}S.{B}+ → CODE1: *{A}SH / CODE2: a{B}RH+（相手{B}番の優れたレセプション）。"},
 
   {skill:"S",level:3,
    compound:true,
@@ -406,7 +419,7 @@ const QUESTIONS_RAW = [
      hlHome:[6],hlAway:[5],result:"good",
    },
    answer:"{A}S.{B}-",variants:["{A}S.{B}-"],
-   explanation:"{A}S.{B}- → CODE1: {A}S / CODE2: a{B}R-（相手{B}番のやや悪いレセプション）。"},
+   explanation:"{A}S.{B}- → CODE1: *{A}SH / CODE2: a{B}RH-（相手{B}番のやや悪いレセプション）。"},
 
   {skill:"S",level:3,
    compound:true,
@@ -418,7 +431,7 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[6],result:"good",
    },
    answer:"a{A}S.{B}#",variants:["a{A}S.{B}#"],
-   explanation:"a{A}S.{B}# → CODE1: a{A}S（相手{A}番サーブ）/ CODE2: {B}R#（自チーム{B}番のパーフェクトレセプション）。"},
+   explanation:"a{A}S.{B}# → CODE1: a{A}SH（相手{A}番サーブ）/ CODE2: *{B}RH#（自チーム{B}番のパーフェクトレセプション）。"},
 
   {skill:"A",level:3,
    compound:true,
@@ -430,7 +443,7 @@ const QUESTIONS_RAW = [
      hlHome:[4],hlAway:[9],result:"ace",
    },
    answer:"a{A}A.{B}#",variants:["a{A}A.{B}#"],
-   explanation:"a{A}A.{B}# → CODE1: a{A}A/（相手{A}番のスパイクがブロックされた）/ CODE2: {B}B#（自チーム{B}番のブロック決定）。"},
+   explanation:"a{A}A.{B}# → CODE1: a{A}AH/（相手{A}番のスパイクがブロックされた）/ CODE2: *{B}BH#（自チーム{B}番のブロック決定）。"},
 
   {skill:"A",level:3,
    compound:true,
@@ -442,7 +455,7 @@ const QUESTIONS_RAW = [
      hlHome:[8],hlAway:[],result:"good",
    },
    answer:"a{A}A.{B}D",variants:["a{A}A.{B}D","a{A}A.{B}D!"],
-   explanation:"a{A}A.{B}D → CODE1: a{A}A / CODE2: {B}D（自チーム{B}番のディグ）。"},
+   explanation:"a{A}A.{B}D → CODE1: a{A}AH / CODE2: *{B}DH（自チーム{B}番のディグ）。"},
 
   {skill:"A",level:3,
    compound:true,
@@ -454,7 +467,7 @@ const QUESTIONS_RAW = [
      hlHome:[4],hlAway:[8],result:"good",
    },
    answer:"{A}A.{B}D+",variants:["{A}A.{B}D+"],
-   explanation:"{A}A.{B}D+ → CODE1: {A}A / CODE2: a{B}D+（相手{B}番の優れたディグ）。"},
+   explanation:"{A}A.{B}D+ → CODE1: *{A}AH / CODE2: a{B}DH+（相手{B}番の優れたディグ）。"},
 
   {skill:"A",level:3,
    compound:true,
@@ -466,7 +479,7 @@ const QUESTIONS_RAW = [
      hlHome:[4],hlAway:[8],result:"ace",
    },
    answer:"{A}A.{B}=",variants:["{A}A.{B}="],
-   explanation:"{A}A.{B}= → CODE1: {A}A#（スパイク決定）/ CODE2: a{B}B=（相手{B}番のブロックミス）。"},
+   explanation:"{A}A.{B}= → CODE1: *{A}AH#（スパイク決定）/ CODE2: a{B}BH=（相手{B}番のブロックミス）。"},
 
   {skill:"A",level:3,
    compound:true,
@@ -478,7 +491,7 @@ const QUESTIONS_RAW = [
      hlHome:[],hlAway:[],result:"bad",
    },
    answer:"a{A}A.{B}D=",variants:["a{A}A.{B}D="],
-   explanation:"a{A}A.{B}D= → CODE1: a{A}A / CODE2: {B}D=（自チーム{B}番のディグミス、失点）。"},
+   explanation:"a{A}A.{B}D= → CODE1: a{A}AH / CODE2: *{B}DH=（自チーム{B}番のディグミス、失点）。"},
 
   // ── LV4: ゾーン・サーブ種別詳細（12問）─────────────────────
   {skill:"S",level:4,
@@ -491,7 +504,7 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[5],result:"good",
    },
    answer:"{A}SM15.{B}#",variants:["{A}SM15.{B}#","{A}SM1.{B}#5"],
-   explanation:"SM15 = ゾーン1からゾーン5へのジャンプフローター。{A}SM15.{B}# = 相手{B}番がパーフェクトレセプション。"},
+   explanation:"{A}SM15.{B}# → CODE1: *{A}SM15（ゾーン1→5 J.フローター）/ CODE2: a{B}RH#（相手{B}番のパーフェクトレセプション）。"},
 
   {skill:"S",level:4,
    players:{A:11},
@@ -514,7 +527,7 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[5],result:"ace",
    },
    answer:"{A}S11.{B}=",variants:["{A}S11.{B}="],
-   explanation:"S11 = ゾーン1からゾーン1へのサーブ。相手{B}番のレセプションミス（エース）= {A}S11.{B}=。"},
+   explanation:"{A}S11.{B}= → CODE1: *{A}SH11（ゾーン1→1サーブ）/ CODE2: a{B}RH=（相手{B}番のレセプションミス）。"},
 
   {skill:"S",level:4,
    players:{A:9},
@@ -537,7 +550,7 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[8],result:"good",
    },
    answer:"{A}SM16.{B}+",variants:["{A}SM16.{B}+"],
-   explanation:"{A}SM16.{B}+ → CODE1: {A}SM16（ゾーン1→ゾーン6 J.フローター）/ CODE2: a{B}R+（相手{B}番の優れたレセプション）。"},
+   explanation:"{A}SM16.{B}+ → CODE1: *{A}SM16（ゾーン1→6 J.フローター）/ CODE2: a{B}RH+（相手{B}番の優れたレセプション）。"},
 
   {skill:"A",level:4,
    players:{A:5},
@@ -604,7 +617,7 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[8],result:"ace",
    },
    answer:"{A}SQ16.{B}=",variants:["{A}SQ16.{B}="],
-   explanation:"{A}SQ16.{B}= → CODE1: {A}SQ16（ゾーン1→ゾーン6 ジャンピングサーブ）/ CODE2: a{B}R=（相手{B}番のレセプションミス）。"},
+   explanation:"{A}SQ16.{B}= → CODE1: *{A}SQ16（ゾーン1→6 ジャンピングサーブ）/ CODE2: a{B}RH=（相手{B}番のレセプションミス）。"},
 
   {skill:"S",level:4,
    compound:true,
@@ -616,7 +629,7 @@ const QUESTIONS_RAW = [
      hlHome:[6],hlAway:[5],result:"good",
    },
    answer:"{A}SM65.{B}+",variants:["{A}SM65.{B}+"],
-   explanation:"{A}SM65.{B}+ → CODE1: {A}SM65（ゾーン6→ゾーン5 ジャンプフローター）/ CODE2: a{B}R+（相手{B}番の優れたレセプション）。"},
+   explanation:"{A}SM65.{B}+ → CODE1: *{A}SM65（ゾーン6→5 ジャンプフローター）/ CODE2: a{B}RH+（相手{B}番の優れたレセプション）。"},
 
   // ── LV5: マルチコード（8問）────────────────────────────────
   {skill:"S",level:5,
@@ -629,7 +642,7 @@ const QUESTIONS_RAW = [
      hlHome:[3],hlAway:[6,8],result:"bad",
    },
    answer:"{A}SQ16.{B}# a{C}PV7.{D}=",variants:["{A}SQ16.{B}# a{C}PV7.{D}="],
-   explanation:"CODE1: {A}SQ16.{B}#（ゾーン1→6ジャンピングサーブ→相手{B}番パーフェクトレセプション）/ CODE2: a{C}PV7.{D}=（相手{C}番ゾーン7レフト平行→味方{D}番ブロックミス）。"},
+   explanation:"複合1: {A}SQ16.{B}# → *{A}SQ16 / a{B}RH#（ゾーン1→6ジャンピングサーブ→相手{B}番パーフェクトレセプション）　複合2: a{C}PV7.{D}= → a{C}PV7# / *{D}BH=（相手{C}番ゾーン7レフト平行→味方{D}番ブロックミス）。"},
 
   {skill:"S",level:5,
    multiCode:true,
@@ -641,7 +654,7 @@ const QUESTIONS_RAW = [
      hlHome:[1,5],hlAway:[5,7],result:"bad",
    },
    answer:"{A}SM51.{B}- a{C}PZ4.{D}/",variants:["{A}SM51.{B}- a{C}PZ4.{D}/"],
-   explanation:"CODE1: {A}SM51.{B}-（ゾーン5→1ジャンプフローター→相手{B}番レセプションー）/ CODE2: a{C}PZ4.{D}/（相手{C}番ゾーン4ライト平行→味方{D}番ブロックアウト）。"},
+   explanation:"複合1: {A}SM51.{B}- → *{A}SM51 / a{B}RH-（ゾーン5→1ジャンプフローター→相手{B}番レセプションー）　複合2: a{C}PZ4.{D}/ → a{C}PZ4 / *{D}BH/（相手{C}番ゾーン4ライト平行→味方{D}番ブロックアウト）。"},
 
   {skill:"S",level:5,
    multiCode:true,
@@ -653,7 +666,7 @@ const QUESTIONS_RAW = [
      hlHome:[2,5],hlAway:[6,8],result:"ace",
    },
    answer:"{A}SM65.{B}! a{C}PA8.{D}#",variants:["{A}SM65.{B}! a{C}PA8.{D}#"],
-   explanation:"CODE1: {A}SM65.{B}!（ゾーン6→5ジャンプフローター→相手{B}番レセプション！）/ CODE2: a{C}PA8.{D}#（相手{C}番ゾーン8Aクイック→味方{D}番ブロック決定）。"},
+   explanation:"複合1: {A}SM65.{B}! → *{A}SM65 / a{B}RH!（ゾーン6→5ジャンプフローター→相手{B}番レセプション！）　複合2: a{C}PA8.{D}# → a{C}PA8/ / *{D}BH#（相手{C}番ゾーン8Aクイック→味方{D}番ブロック決定）。"},
 
   {skill:"R",level:5,
    multiCode:true,
@@ -665,7 +678,7 @@ const QUESTIONS_RAW = [
      hlHome:[5,4],hlAway:[7],result:"bad",
    },
    answer:"a{A}SQ56.{B}# {C}PV7.{D}#",variants:["a{A}SQ56.{B}# {C}PV7.{D}#"],
-   explanation:"CODE1: a{A}SQ56.{B}#（相手{A}番ゾーン5→6ジャンピングサーブ→自チーム{B}番パーフェクトレセプション）/ CODE2: {C}PV7.{D}#（{C}番ゾーン7レフト平行→相手{D}番ブロック決定）。"},
+   explanation:"複合1: a{A}SQ56.{B}# → a{A}SQ56 / *{B}RH#（相手{A}番ゾーン5→6ジャンピングサーブ→自チーム{B}番パーフェクトレセプション）　複合2: {C}PV7.{D}# → *{C}PV7/ / a{D}BH#（{C}番ゾーン7レフト平行→相手{D}番ブロック決定）。"},
 
   {skill:"R",level:5,
    multiCode:true,
@@ -677,7 +690,7 @@ const QUESTIONS_RAW = [
      hlHome:[5,3],hlAway:[],result:"good",
    },
    answer:"a{A}SM15.{B}+ {C}PA5.{D}D+",variants:["a{A}SM15.{B}+ {C}PA5.{D}D+"],
-   explanation:"CODE1: a{A}SM15.{B}+（相手{A}番ゾーン1→5ジャンプフローター→自チーム{B}番レセプション+）/ CODE2: {C}PA5.{D}D+（{C}番ゾーン5Aクイック→相手{D}番優れたディグ）。"},
+   explanation:"複合1: a{A}SM15.{B}+ → a{A}SM15 / *{B}RH+（相手{A}番ゾーン1→5ジャンプフローター→自チーム{B}番レセプション+）　複合2: {C}PA5.{D}D+ → *{C}PA5 / a{D}DH+（{C}番ゾーン5Aクイック→相手{D}番優れたディグ）。"},
 
   {skill:"A",level:5,
    multiCode:true,
@@ -689,7 +702,7 @@ const QUESTIONS_RAW = [
      hlHome:[],hlAway:[8,2],result:"bad",
    },
    answer:"{A}SQ61.{B}# a{C}PZ7.{D}=",variants:["{A}SQ61.{B}# a{C}PZ7.{D}="],
-   explanation:"CODE1: {A}SQ61.{B}#（ゾーン6→1ジャンピングサーブ→相手{B}番パーフェクトレセプション）/ CODE2: a{C}PZ7.{D}=（相手{C}番ゾーン7ライト平行→味方{D}番ブロックミス）。"},
+   explanation:"複合1: {A}SQ61.{B}# → *{A}SQ61 / a{B}RH#（ゾーン6→1ジャンピングサーブ→相手{B}番パーフェクトレセプション）　複合2: a{C}PZ7.{D}= → a{C}PZ7# / *{D}BH=（相手{C}番ゾーン7ライト平行→味方{D}番ブロックミス）。"},
 
   {skill:"D",level:5,
    multiCode:true,
@@ -701,7 +714,7 @@ const QUESTIONS_RAW = [
      hlHome:[1,4],hlAway:[],result:"good",
    },
    answer:"a{A}SM68.{B}- {C}PV4.{D}D",variants:["a{A}SM68.{B}- {C}PV4.{D}D"],
-   explanation:"CODE1: a{A}SM68.{B}-（相手{A}番ゾーン6→8ジャンプフローター→自チーム{B}番レセプションー）/ CODE2: {C}PV4.{D}D（{C}番ゾーン4レフト平行→相手{D}番ディグ）。"},
+   explanation:"複合1: a{A}SM68.{B}- → a{A}SM68 / *{B}RH-（相手{A}番ゾーン6→8ジャンプフローター→自チーム{B}番レセプションー）　複合2: {C}PV4.{D}D → *{C}PV4 / a{D}DH（{C}番ゾーン4レフト平行→相手{D}番ディグ）。"},
 
   {skill:"B",level:5,
    multiCode:true,
@@ -713,7 +726,7 @@ const QUESTIONS_RAW = [
      hlHome:[4],hlAway:[8,3],result:"bad",
    },
    answer:"a{A}SM56.{B}+ {C}PA1.{D}#",variants:["a{A}SM56.{B}+ {C}PA1.{D}#"],
-   explanation:"CODE1: a{A}SM56.{B}+（相手{A}番ゾーン5→6ジャンプフローター→自チーム{B}番レセプション+）/ CODE2: {C}PA1.{D}#（{C}番ゾーン1Aクイック→相手{D}番ブロック決定）。"},
+   explanation:"複合1: a{A}SM56.{B}+ → a{A}SM56 / *{B}RH+（相手{A}番ゾーン5→6ジャンプフローター→自チーム{B}番レセプション+）　複合2: {C}PA1.{D}# → *{C}PA1/ / a{D}BH#（{C}番ゾーン1Aクイック→相手{D}番ブロック決定）。"},
 ];
 
 export default QUESTIONS_RAW;

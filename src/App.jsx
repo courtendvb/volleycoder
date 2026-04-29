@@ -64,7 +64,7 @@ const KB_ROWS = [
 const TUTORIAL_SLIDES = [
   {
     title: "DataVolley記法とは",
-    body: "バレーボールの各プレーを短いコードで記録する方法です。\nVolleCoder では、コードを見て正しく入力する練習ができます。",
+    body: "バレーボールの各プレーを短いコードで記録する方法です。\nVolleCoder では、コードを正しく入力する練習ができます。",
     example: null,
     note: null,
   },
@@ -76,7 +76,7 @@ const TUTORIAL_SLIDES = [
   },
   {
     title: "スキルコード",
-    body: "プレーの種類をアルファベット1〜2文字で表します。",
+    body: "プレーの種類をアルファベット1文字で表します。",
     example: null,
     table: [
       ["S", "サーブ"],
@@ -89,16 +89,16 @@ const TUTORIAL_SLIDES = [
   },
   {
     title: "評価コード",
-    body: "プレーの結果や質を記号で表します。",
+    body: "プレーの結果や質を記号で表します。/nアタックの場合、一般的に",
     example: null,
     table: [
       ["#", "決定（得点）"],
       ["=", "ミス（失点）"],
-      ["+", "優れた"],
-      ["!", "普通"],
-      ["-", "やや悪い"],
-      ["/", "ブロックアウト"],
-      ["（なし）", "ラリー継続"],
+      ["+", "ポジティブアタック"],
+      ["!", "ブロックのリバウンド"],
+      ["-", "ネガティブアタック"],
+      ["/", "シャットアウト"],
+      
     ],
   },
   {
@@ -115,7 +115,7 @@ const TUTORIAL_SLIDES = [
   },
   {
     title: "準備完了！",
-    body: "まずはLv1の基本コードから挑戦しましょう。\nコートを見てコードを入力してください。",
+    body: "まずはLv1の基本コードから挑戦しましょう。\n問題文とコートを見てコードを入力してください。",
     example: null,
     note: null,
   },
@@ -159,6 +159,7 @@ const SUB = {
 const QUESTIONS = QUESTIONS_RAW.map((q, i) => ({ ...q, id: i + 1 }));
 
 const ROUND_SIZE = 7;
+const TIME_LIMIT = 10;
 
 // ══════════════════════════════════════════════════════════════
 // 5. ランク定義 & XPユーティリティ
@@ -258,6 +259,11 @@ function randomizeQuestion(q) {
     ? str.replace(/\{PRE\}/g, PRE).replace(/\{APRE\}/g, APRE)
          .replace(/\{(\w)\}/g, (_, k) => numMap[k] ?? k)
     : str;
+  // 解説用：背番号を2桁ゼロパディング（DataVolley標準形式）
+  const subPad = str => typeof str === "string"
+    ? str.replace(/\{PRE\}/g, PRE).replace(/\{APRE\}/g, APRE)
+         .replace(/\{(\w)\}/g, (_, k) => numMap[k] !== undefined ? String(numMap[k]).padStart(2, '0') : k)
+    : str;
 
   const flipBall = segs => segs?.map(seg => ({
     ...seg,
@@ -283,7 +289,7 @@ function randomizeQuestion(q) {
     },
     answer: sub(base.answer),
     variants: base.variants.map(sub),
-    explanation: sub(base.explanation ?? ""),
+    explanation: subPad(base.explanation ?? ""),
   };
 }
 
@@ -304,6 +310,7 @@ const GLOBAL_CSS = `
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
   @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
   @keyframes unlockPop{0%{opacity:0;transform:translateX(-50%) scale(0.7)}60%{transform:translateX(-50%) scale(1.08)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
+  @keyframes timerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
   button:active{opacity:0.7!important;transform:scale(0.95)!important}
 `;
 
@@ -852,8 +859,14 @@ function ResultScreen({ result, q, streak, onNext, onHome }) {
 
   return (
     <div style={{flex:1,overflowY:"auto",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 20px",textAlign:"center",gap:12,borderTop:`3px solid ${result.correct?C.green:C.red}`,background:result.correct?"rgba(0,255,136,0.03)":"rgba(255,51,68,0.03)"}}>
-      <div style={{fontSize:58,animation:"pop 0.4s ease"}}>{result.correct ? "🎯" : "🔕"}</div>
-      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:38,letterSpacing:4,color:result.correct?C.green:C.red}}>{result.correct ? "SPIKE!!" : "OUT!"}</div>
+      <div style={{fontSize:58,animation:"pop 0.4s ease"}}>{result.correct ? "🎯" : result.timeout ? "⏰" : "🔕"}</div>
+      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:38,letterSpacing:4,color:result.correct?C.green:C.red}}>{result.correct ? "SPIKE!!" : result.timeout ? "TIMEOUT!" : "OUT!"}</div>
+
+      {result.timeout && (
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,51,68,0.1)",border:`1px solid ${C.red}`,borderRadius:20,padding:"4px 16px",fontSize:12,color:C.red,fontFamily:"monospace",letterSpacing:1}}>
+          ⏱ 入力遅延ミス — 10秒超過
+        </div>
+      )}
 
       {!result.correct && (
         <div>
@@ -891,6 +904,11 @@ function ResultScreen({ result, q, streak, onNext, onHome }) {
 
       <div style={{fontSize:13,color:"rgba(220,235,255,0.75)",lineHeight:1.85,maxWidth:300,background:C.surface2,padding:"12px 14px",borderRadius:8,border:`1px solid ${C.border}`,textAlign:"left"}}>{q.explanation}</div>
 
+      {result.correct && result.timeBonus && (
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(0,212,255,0.1)",border:`1px solid ${C.cyan}`,borderRadius:20,padding:"4px 16px",fontSize:13,color:C.cyan,fontFamily:"monospace",letterSpacing:1}}>
+          ⚡ タイムボーナス {result.timeBonus}
+        </div>
+      )}
       {result.correct && (
         <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,107,53,0.12)",border:`1px solid ${C.orange}`,borderRadius:20,padding:"4px 16px",fontSize:13,color:C.orange,fontFamily:"monospace"}}>
           ⚡ +{result.gainXp} XP {streak >= 3 ? "🔥 STREAK!" : ""}
@@ -939,7 +957,9 @@ function RoundReviewScreen({ roundData, streak, onContinue, onHome }) {
   );
 }
 
-function GameScreen({ q, qs, qIndex, input, shake, streak, score, animKey, xpAnim, unlockAnim, onKey, onSubmit, onClearInput, onHome }) {
+function GameScreen({ q, qs, qIndex, input, shake, streak, score, animKey, xpAnim, unlockAnim, timeLeft, onKey, onSubmit, onClearInput, onHome }) {
+  const timerColor = timeLeft <= 3 ? C.red : timeLeft <= 6 ? C.yellow : C.green;
+  const timerPulse = timeLeft <= 3;
   const qNum = (qIndex % qs.length) + 1;
   return (
     <>
@@ -965,6 +985,15 @@ function GameScreen({ q, qs, qIndex, input, shake, streak, score, animKey, xpAni
           <span style={{fontFamily:"monospace",fontSize:11,color:C.muted}}>Q.{qNum}<span style={{color:"rgba(220,235,255,0.2)"}}>/{qs.length}</span></span>
           {streak >= 2 && <span style={{background:"rgba(255,107,53,0.18)",border:`1px solid ${C.orange}`,borderRadius:20,padding:"2px 8px",fontSize:11,color:C.orange,fontFamily:"monospace"}}>🔥×{streak}</span>}
           <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,color:C.yellow,letterSpacing:2}}>{score}</span>
+          <span style={{
+            fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,
+            color:timerColor,
+            border:`1px solid ${timerColor}55`,
+            borderRadius:20,padding:"2px 8px",
+            background:`${timerColor}12`,
+            minWidth:36,textAlign:"center",
+            animation: timerPulse ? "timerPulse 0.6s ease-in-out infinite" : "none",
+          }}>⏱{timeLeft}</span>
         </div>
         <div style={{display:"flex",gap:3}}>
           {[...Array(5)].map((_,i) => (
@@ -1034,9 +1063,25 @@ export default function VolleyCoder() {
   const [rq,          setRq]          = useState(null);
   const [roundData,   setRoundData]   = useState({ num:1, correct:0, xpGained:0, count:0 });
   const [qOrder,      setQOrder]      = useState([]);
+  const [timeLeft,    setTimeLeft]    = useState(TIME_LIMIT);
+  const timerRef      = useRef(null);
+  const timerStartRef = useRef(null);
+  const timeoutHandlerRef = useRef(null);
 
   const maxUnlockedLevel = getMaxUnlockedLevel(xp);
   const prevMaxLevel = useRef(maxUnlockedLevel);
+
+  // タイムアウトハンドラ（毎レンダーで最新クロージャに更新）
+  timeoutHandlerRef.current = () => {
+    if (screen !== "game" || result) return;
+    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+    setStats(p => ({ ...p, [q?.id]: false }));
+    setRoundData(r => ({ ...r, count: r.count + 1 }));
+    setStreak(0);
+    setShake(true);
+    setTimeout(() => setShake(false), 400);
+    setResult({ correct: false, codeStr: input, gainXp: 0, timeout: true });
+  };
 
   // データの永続化
   useEffect(() => {
@@ -1076,6 +1121,27 @@ export default function VolleyCoder() {
       if (qOrder.length > 0 && qIndex > 0 && qIndex % qOrder.length === 0) {
         setQOrder(shuffleIndices(qs.length));
       }
+      // アニメーション完了後にタイマースタート（800ms遅延）
+      if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+      setTimeLeft(TIME_LIMIT);
+      const startDelay = setTimeout(() => {
+        timerStartRef.current = Date.now();
+        timerRef.current = setInterval(() => {
+          setTimeLeft(t => {
+            if (t <= 1) {
+              clearInterval(timerRef.current);
+              timerRef.current = null;
+              setTimeout(() => timeoutHandlerRef.current?.(), 0);
+              return 0;
+            }
+            return t - 1;
+          });
+        }, 1000);
+      }, 800);
+      return () => {
+        clearTimeout(startDelay);
+        if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+      };
     }
   }, [screen, qIndex]);
 
@@ -1086,14 +1152,21 @@ export default function VolleyCoder() {
 
   const handleSubmit = useCallback(() => {
     if (!input.trim()) return;
+    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+    const elapsed = timerStartRef.current ? (Date.now() - timerStartRef.current) / 1000 : 99;
+    let multiplier = 1;
+    let timeBonus = null;
+    if (elapsed <= 2)   { multiplier = 2;   timeBonus = "×2"; }
+    else if (elapsed <= 3.5) { multiplier = 1.5; timeBonus = "×1.5"; }
     const dq      = rq ?? q;
     const correct = dq.variants.some(v => v.trim().toLowerCase() === input.trim().toLowerCase());
-    const gainXp  = correct ? (dq.level * 10 + (streak >= 3 ? 5 : 0)) : 0;
+    const baseXp  = dq.level * 10 + (streak >= 3 ? 5 : 0);
+    const gainXp  = correct ? Math.round(baseXp * multiplier) : 0;
     if (correct) {
       setScore(s => s + 1);
       setStreak(s => { const ns = s + 1; setMaxStreak(m => Math.max(m, ns)); return ns; });
       setXp(x => x + gainXp);
-      setXpAnim(`+${gainXp} XP`);
+      setXpAnim(timeBonus ? `+${gainXp} XP ${timeBonus}` : `+${gainXp} XP`);
       setTimeout(() => setXpAnim(null), 1600);
     } else {
       setStreak(0);
@@ -1102,7 +1175,7 @@ export default function VolleyCoder() {
     }
     setStats(p => ({ ...p, [q.id]: correct }));
     setRoundData(r => ({ ...r, correct: r.correct + (correct?1:0), xpGained: r.xpGained + gainXp, count: r.count + 1 }));
-    setResult({ correct, codeStr: input, gainXp });
+    setResult({ correct, codeStr: input, gainXp, timeBonus });
   }, [input, q, rq, streak]);
 
   const handleNext = useCallback(() => {
@@ -1193,6 +1266,7 @@ export default function VolleyCoder() {
       q={displayQ} qs={qs} qIndex={qIndex}
       input={input} shake={shake} streak={streak} score={score}
       animKey={animKey} xpAnim={xpAnim} unlockAnim={unlockAnim}
+      timeLeft={timeLeft}
       onKey={handleKey} onSubmit={handleSubmit}
       onClearInput={() => setInput("")}
       onHome={() => setScreen("home")}
