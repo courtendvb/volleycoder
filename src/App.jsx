@@ -59,7 +59,70 @@ const KB_ROWS = [
 ];
 
 // ══════════════════════════════════════════════════════════════
-// 3. コートゾーン定義
+// 3. チュートリアルスライド定義
+// ══════════════════════════════════════════════════════════════
+const TUTORIAL_SLIDES = [
+  {
+    title: "DataVolley記法とは",
+    body: "バレーボールの各プレーを短いコードで記録する方法です。\nVolleCoder では、コードを見て正しく入力する練習ができます。",
+    example: null,
+    note: null,
+  },
+  {
+    title: "基本構造",
+    body: "コードは「背番号 ＋ スキル ＋ 評価」の順で構成されます。",
+    example: "7S#",
+    note: "7番がサーブを打ってエース",
+  },
+  {
+    title: "スキルコード",
+    body: "プレーの種類をアルファベット1〜2文字で表します。",
+    example: null,
+    table: [
+      ["S", "サーブ"],
+      ["R", "レセプション（サーブレシーブ）"],
+      ["A", "アタック（スパイク）"],
+      ["B", "ブロック"],
+      ["D", "ディグ（スパイクレシーブ）"],
+      ["E", "セット（トス）"],
+    ],
+  },
+  {
+    title: "評価コード",
+    body: "プレーの結果や質を記号で表します。",
+    example: null,
+    table: [
+      ["#", "決定（得点）"],
+      ["=", "ミス（失点）"],
+      ["+", "優れた"],
+      ["!", "普通"],
+      ["-", "やや悪い"],
+      ["/", "ブロックアウト"],
+      ["（なし）", "ラリー継続"],
+    ],
+  },
+  {
+    title: "相手チームのプレー",
+    body: "相手チームのプレーには「a」を先頭に付けます。",
+    example: "a3S#",
+    note: "相手3番がサーブエース",
+  },
+  {
+    title: "コンパウンドコード",
+    body: "2つのプレーを「.」でつなげて1コードにします。\nLv3以降で登場します。",
+    example: "a7S.3+",
+    note: "相手7番のサーブ → 自チーム3番が優れたレセプション",
+  },
+  {
+    title: "準備完了！",
+    body: "まずはLv1の基本コードから挑戦しましょう。\nコートを見てコードを入力してください。",
+    example: null,
+    note: null,
+  },
+];
+
+// ══════════════════════════════════════════════════════════════
+// 4. コートゾーン定義
 // SVG viewBox 0 0 300 230 / コート x:30〜270 / ネット y:115
 // HOME y:115〜210 / AWAY y:20〜115
 // HOME列: 左=70 中=150 右=230
@@ -505,6 +568,78 @@ function SoftKeyboard({ onKey, onSubmit }) {
 // 10. 各画面コンポーネント
 // ══════════════════════════════════════════════════════════════
 
+function TutorialScreen({ onDone, fromHome }) {
+  const [slide, setSlide] = useState(0);
+  const total = TUTORIAL_SLIDES.length;
+  const s = TUTORIAL_SLIDES[slide];
+  const isLast = slide === total - 1;
+
+  return (
+    <div style={{flex:1,display:"flex",flexDirection:"column",padding:"24px 20px",gap:16,overflowY:"auto"}}>
+      {/* progress dots */}
+      <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:8}}>
+        {TUTORIAL_SLIDES.map((_,i) => (
+          <div key={i} style={{width:6,height:6,borderRadius:"50%",
+            background: i===slide ? C.orange : i<slide ? C.yellow : "rgba(255,255,255,0.15)",
+            transition:"background 0.2s"}} />
+        ))}
+      </div>
+
+      {/* card */}
+      <div style={{flex:1,display:"flex",flexDirection:"column",gap:14,justifyContent:"center"}}>
+        <div style={{fontSize:20,fontWeight:700,color:C.orange,letterSpacing:1,textAlign:"center"}}>
+          {s.title}
+        </div>
+
+        <div style={{fontSize:13,color:C.text,lineHeight:1.8,textAlign:"center",whiteSpace:"pre-line"}}>
+          {s.body}
+        </div>
+
+        {s.example && (
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
+            <div style={{fontFamily:"monospace",fontSize:28,fontWeight:700,
+              color:C.cyan,letterSpacing:3,padding:"12px 24px",
+              background:"rgba(0,212,255,0.08)",borderRadius:12,
+              border:`1px solid rgba(0,212,255,0.2)`}}>
+              {s.example}
+            </div>
+            {s.note && <div style={{fontSize:11,color:C.muted}}>{s.note}</div>}
+          </div>
+        )}
+
+        {s.table && (
+          <div style={{display:"flex",flexDirection:"column",gap:4,alignSelf:"center",width:"100%",maxWidth:320}}>
+            {s.table.map(([code, label]) => (
+              <div key={code} style={{display:"flex",alignItems:"center",gap:10,
+                padding:"6px 12px",borderRadius:8,background:"rgba(255,255,255,0.04)"}}>
+                <span style={{fontFamily:"monospace",fontSize:16,fontWeight:700,
+                  color:C.cyan,minWidth:52,textAlign:"center"}}>{code}</span>
+                <span style={{fontSize:12,color:C.muted}}>{label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* buttons */}
+      <div style={{display:"flex",gap:10,paddingBottom:8}}>
+        <button onClick={onDone}
+          style={{flex:1,padding:"10px 0",borderRadius:20,border:`1px solid ${C.border}`,
+            background:"transparent",color:C.muted,fontSize:12,fontFamily:"monospace",cursor:"pointer"}}>
+          {fromHome ? "閉じる" : "スキップ"}
+        </button>
+        <button onClick={() => isLast ? onDone() : setSlide(s => s + 1)}
+          style={{flex:2,padding:"10px 0",borderRadius:20,border:"none",
+            background: isLast ? C.orange : `rgba(255,107,53,0.18)`,
+            color: isLast ? "#fff" : C.orange,
+            fontSize:13,fontFamily:"monospace",fontWeight:700,cursor:"pointer",letterSpacing:1}}>
+          {isLast ? "はじめる！" : "つぎへ →"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function HomeScreen({ score, maxStreak, xp, rank, xpPct, nextRank, levelFilter, setLevelFilter, maxUnlockedLevel, onStart, onNav }) {
   return (
     <div style={{flex:1,overflowY:"auto"}}>
@@ -552,8 +687,8 @@ function HomeScreen({ score, maxStreak, xp, rank, xpPct, nextRank, levelFilter, 
         <button onClick={onStart} style={{padding:"15px 48px",background:`linear-gradient(135deg,${C.orange},#e65100)`,border:"none",borderRadius:10,color:"white",fontWeight:900,fontSize:16,letterSpacing:3,cursor:"pointer",width:"100%",maxWidth:260,fontFamily:"'Noto Sans JP',sans-serif",animation:"glow 2.2s ease-in-out infinite",marginTop:4}}>
           🏐 試合開始
         </button>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,width:"100%",maxWidth:260}}>
-          {[{icon:"📚",label:"コード辞書",sc:"ref"},{icon:"📊",label:"進捗",sc:"prog"}].map(({icon,label,sc}) => (
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,width:"100%",maxWidth:300}}>
+          {[{icon:"📚",label:"コード辞書",sc:"ref"},{icon:"📊",label:"進捗",sc:"prog"},{icon:"📖",label:"チュートリアル",sc:"tutorial"}].map(({icon,label,sc}) => (
             <button key={sc} onClick={() => onNav(sc)} style={{padding:"12px 8px",background:"rgba(255,255,255,0.04)",border:`1px solid ${C.border}`,borderRadius:10,color:"rgba(220,235,255,0.7)",cursor:"pointer",textAlign:"center",fontFamily:"'Noto Sans JP',sans-serif"}}>
               <div style={{fontSize:20,marginBottom:4}}>{icon}</div>
               <div style={{fontSize:11,letterSpacing:1}}>{label}</div>
@@ -873,7 +1008,9 @@ function GameScreen({ q, qs, qIndex, input, shake, streak, score, animKey, xpAni
 // 11. メインアプリ
 // ══════════════════════════════════════════════════════════════
 export default function VolleyCoder() {
-  const [screen,      setScreen]      = useState("home");
+  const [screen,      setScreen]      = useState(() =>
+    localStorage.getItem("vc_tutorial_done") ? "home" : "tutorial"
+  );
   const [levelFilter, setLevelFilter] = useState(1);
   const [qIndex,      setQIndex]      = useState(0);
   const [input,       setInput]       = useState("");
@@ -1007,6 +1144,13 @@ export default function VolleyCoder() {
       <style>{GLOBAL_CSS}</style>
       {children}
     </div>
+  );
+
+  if (screen === "tutorial") return shell(
+    <TutorialScreen onDone={() => {
+      localStorage.setItem("vc_tutorial_done", "1");
+      setScreen("home");
+    }} fromHome={localStorage.getItem("vc_tutorial_done") === "1"} />
   );
 
   if (screen === "home") return shell(
