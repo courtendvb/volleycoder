@@ -93,6 +93,7 @@ const SUB = {
 // {A}/{B} は背番号スロット。players:{A:初期値} で定義。
 // ══════════════════════════════════════════════════════════════
 const QUESTIONS_RAW = [
+  // ── LV1: 基本スキルコード（12問）──────────────────────────────
   {skill:"S",level:1,
    players:{A:7},
    scene:{
@@ -102,12 +103,7 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[],
    },
    answer:"{A}S",variants:["{A}S"],
-   explanation:"基本形：背番号＋S。評価なしはラリーが続いたことを意味します。",
-   cycle2:[
-     {extraPlayers:{B:4},descSuffix:"相手{B}番のレセプション評価は+。",answer:"{A}S.{B}+",variants:["{A}S.{B}+"],explanation:"S系コンパウンド。{A}S.{B}+ → CODE1:{A}S / CODE2:a{B}R+（優れたレセプション）。"},
-     {extraPlayers:{B:4},descSuffix:"相手{B}番のレセプション評価は！。",answer:"{A}S.{B}!",variants:["{A}S.{B}!","{A}S"],explanation:"S系コンパウンド。{A}S.{B}! → CODE1:{A}S / CODE2:a{B}R!（普通のレセプション）。"},
-     {extraPlayers:{B:4},descSuffix:"相手{B}番のレセプション評価は－。",answer:"{A}S.{B}-",variants:["{A}S.{B}-"],explanation:"S系コンパウンド。{A}S.{B}- → CODE1:{A}S / CODE2:a{B}R-（やや悪いレセプション）。"},
-   ]},
+   explanation:"基本形：背番号＋S。評価なしはラリーが続いた状態。"},
 
   {skill:"S",level:1,
    players:{A:3},
@@ -118,7 +114,18 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[6],result:"ace",
    },
    answer:"{A}S#",variants:["{A}S#"],
-   explanation:"「#」は決定。サーブエース = S# です。"},
+   explanation:"決定は「#」。サーブエース = {A}S#。"},
+
+  {skill:"S",level:1,
+   players:{A:11},
+   scene:{
+     desc:"{A}番のサーブがネットに引っかかった。",
+     ball:[{fx:150,fy:218,tx:150,ty:115,net:true}],
+     actors:[{n:"A",side:"home",x:150,y:218}],
+     hlHome:[6],hlAway:[],result:"miss",
+   },
+   answer:"{A}S=",variants:["{A}S="],
+   explanation:"サーブのネット・アウトはどちらも「=」ミス。{A}S=で記録。"},
 
   {skill:"A",level:1,
    players:{A:5},
@@ -129,7 +136,18 @@ const QUESTIONS_RAW = [
      hlHome:[4],hlAway:[],result:"ace",
    },
    answer:"{A}A#",variants:["{A}A#"],
-   explanation:"A = アタック。決定は「#」。"},
+   explanation:"A = アタック。スパイク決定は「#」。{A}A#。"},
+
+  {skill:"A",level:1,
+   players:{A:4},
+   scene:{
+     desc:"{A}番がスパイクを打ったがアウトになった。",
+     ball:[{fx:70,fy:128,tx:30,ty:215,spike:true}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true}],
+     hlHome:[4],hlAway:[],result:"miss",
+   },
+   answer:"{A}A=",variants:["{A}A="],
+   explanation:"スパイクのアウト・ネットはどちらも「=」ミス。{A}A=。"},
 
   {skill:"B",level:1,
    players:{A:2},
@@ -140,7 +158,18 @@ const QUESTIONS_RAW = [
      hlHome:[2],hlAway:[],result:"ace",
    },
    answer:"{A}B#",variants:["{A}B#"],
-   explanation:"B = Block。ブロック成功も「#」で記録。"},
+   explanation:"B = Block。ブロック決定は「#」。{A}B#。"},
+
+  {skill:"B",level:1,
+   players:{A:8},
+   scene:{
+     desc:"{A}番がブロックに跳んだが、ボールが自コートに落ちた。",
+     ball:[{fx:150,fy:96,tx:150,ty:185}],
+     actors:[{n:"A",side:"home",x:150,y:128,jump:true},{n:11,side:"away",x:150,y:96,jump:true}],
+     hlHome:[],hlAway:[],result:"bad",
+   },
+   answer:"{A}B=",variants:["{A}B="],
+   explanation:"ブロックできず失点 = B=。"},
 
   {skill:"E",level:1,
    players:{A:10},
@@ -151,11 +180,7 @@ const QUESTIONS_RAW = [
      hlHome:[8],hlAway:[],
    },
    answer:"{A}E",variants:["{A}E"],
-   explanation:"E = sEt（トス）。セッターの背番号＋E。ゾーン8は中央。",
-   cycle2:[
-     {descSuffix:"このトスの評価は+。",answer:"{A}E+",variants:["{A}E+"],explanation:"E+ = 優れたセット。アタッカーが打ちやすいトス。"},
-     {descSuffix:"このトスの評価は－。",answer:"{A}E-",variants:["{A}E-"],explanation:"E- = やや悪いセット。アタッカーが打ちにくいトス。"},
-   ]},
+   explanation:"E = sEt（トス）。評価なしは通常のトス。"},
 
   {skill:"D",level:1,
    players:{A:8},
@@ -166,11 +191,18 @@ const QUESTIONS_RAW = [
      hlHome:[8],hlAway:[],
    },
    answer:"{A}D",variants:["{A}D","{A}D!"],
-   explanation:"D = Dig（スパイクレシーブ）。ゾーン8（センター）でスパイクを拾った。",
-   cycle2:[
-     {descSuffix:"このディグの評価は+。",answer:"{A}D+",variants:["{A}D+"],explanation:"D+ = 優れたディグ。セッターが上げやすい好レシーブ。"},
-     {descSuffix:"このディグは＝（ミス）だった。",answer:"{A}D=",variants:["{A}D="],explanation:"D= = ディグミス。スパイクを拾えず失点。"},
-   ]},
+   explanation:"D = Dig（スパイクレシーブ）。評価なし（または!）は普通のディグ。"},
+
+  {skill:"D",level:1,
+   players:{A:6},
+   scene:{
+     desc:"相手のスパイクを{A}番がディグできなかった。",
+     ball:[{fx:230,fy:98,tx:180,ty:175}],
+     actors:[{n:"A",side:"home",x:180,y:175},{n:9,side:"away",x:230,y:96,jump:true}],
+     hlHome:[],hlAway:[],result:"bad",
+   },
+   answer:"{A}D=",variants:["{A}D="],
+   explanation:"ディグミス（拾えず失点）= D=。"},
 
   {skill:"R",level:1,
    players:{A:3},
@@ -181,62 +213,211 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[6],
    },
    answer:"{A}R",variants:["{A}R","{A}R!"],
-   explanation:"R = Reception（サーブレシーブ）。背番号＋R。評価なしは普通のレシーブ。",
-   cycle2:[
-     {descSuffix:"評価は#（パーフェクト）。",answer:"{A}R#",variants:["{A}R#"],explanation:"R# = 完璧なレセプション。セッターが自由にトスを上げられる。"},
-     {descSuffix:"評価は+。",answer:"{A}R+",variants:["{A}R+"],explanation:"R+ = 優れたレセプション。"},
-     {descSuffix:"評価は！。",answer:"{A}R!",variants:["{A}R!","{A}R"],explanation:"R! = 普通のレセプション。評価なしと同義。"},
-     {descSuffix:"評価は－。",answer:"{A}R-",variants:["{A}R-"],explanation:"R- = やや悪いレセプション。セッターの選択肢が狭まる。"},
-     {descSuffix:"評価は＝（ミス）。",answer:"{A}R=",variants:["{A}R="],explanation:"R= = レセプションミス。相手サーブエースと同義。"},
-   ]},
+   explanation:"R = Reception（サーブレシーブ）。評価なし（または!）は普通のレシーブ。"},
 
-  {skill:"A",level:2,
+  {skill:"R",level:1,
+   players:{A:5},
+   scene:{
+     desc:"{A}番がサーブレシーブをミスした。",
+     ball:[{fx:150,fy:15,tx:70,ty:195}],
+     actors:[{n:"A",side:"home",x:70,y:193}],
+     hlHome:[5],hlAway:[6],result:"miss",
+   },
+   answer:"{A}R=",variants:["{A}R="],
+   explanation:"レセプションミス = {A}R=。相手サーブエースと同義。"},
+
+  // ── LV2: 評価 + 味方/相手ランダム（15問, sideRandom）──────────
+  {skill:"R",level:2,sideRandom:true,
+   players:{A:3},
+   scene:{
+     desc:"{PRE}{A}番のレセプションが完璧だった（評価#）。",
+     ball:[{fx:150,fy:15,tx:70,ty:193}],
+     actors:[{n:"A",side:"home",x:70,y:193}],
+     hlHome:[5],hlAway:[],result:"good",
+   },
+   answer:"{APRE}{A}R#",variants:["{APRE}{A}R#"],
+   explanation:"{APRE}{A}R# = {PRE}{A}番のパーフェクトレセプション。セッターが自由にトスを上げられる。"},
+
+  {skill:"R",level:2,sideRandom:true,
+   players:{A:4},
+   scene:{
+     desc:"{PRE}{A}番のレセプション評価は+（優れた）。",
+     ball:[{fx:150,fy:15,tx:70,ty:193}],
+     actors:[{n:"A",side:"home",x:70,y:193}],
+     hlHome:[5],hlAway:[],result:"good",
+   },
+   answer:"{APRE}{A}R+",variants:["{APRE}{A}R+"],
+   explanation:"{APRE}{A}R+ = {PRE}{A}番の優れたレセプション。"},
+
+  {skill:"R",level:2,sideRandom:true,
+   players:{A:7},
+   scene:{
+     desc:"{PRE}{A}番のレセプション評価は！（普通）。",
+     ball:[{fx:150,fy:15,tx:150,ty:193}],
+     actors:[{n:"A",side:"home",x:150,y:193}],
+     hlHome:[6],hlAway:[],
+   },
+   answer:"{APRE}{A}R!",variants:["{APRE}{A}R!","{APRE}{A}R"],
+   explanation:"{APRE}{A}R! = {PRE}{A}番の普通のレセプション。評価なしと同義。"},
+
+  {skill:"R",level:2,sideRandom:true,
+   players:{A:9},
+   scene:{
+     desc:"{PRE}{A}番のレセプション評価はー（やや悪い）。",
+     ball:[{fx:150,fy:15,tx:230,ty:193}],
+     actors:[{n:"A",side:"home",x:230,y:193}],
+     hlHome:[1],hlAway:[],result:"bad",
+   },
+   answer:"{APRE}{A}R-",variants:["{APRE}{A}R-"],
+   explanation:"{APRE}{A}R- = {PRE}{A}番のやや悪いレセプション。セッターの選択肢が狭まる。"},
+
+  {skill:"A",level:2,sideRandom:true,
+   players:{A:5},
+   scene:{
+     desc:"{PRE}{A}番のスパイクがブロックされた。",
+     ball:[{fx:70,fy:128,tx:150,ty:115,spike:true},{fx:150,fy:115,tx:70,ty:185}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true}],
+     hlHome:[4],hlAway:[],result:"bad",
+   },
+   answer:"{APRE}{A}A/",variants:["{APRE}{A}A/"],
+   explanation:"{APRE}{A}A/ = {PRE}{A}番のスパイクがブロックされた。「/」はブロックされた評価。"},
+
+  {skill:"D",level:2,sideRandom:true,
+   players:{A:8},
+   scene:{
+     desc:"{PRE}{A}番のディグ評価は+（優れた）。",
+     ball:[{fx:230,fy:96,tx:150,ty:162}],
+     actors:[{n:"A",side:"home",x:150,y:162}],
+     hlHome:[8],hlAway:[],result:"good",
+   },
+   answer:"{APRE}{A}D+",variants:["{APRE}{A}D+"],
+   explanation:"{APRE}{A}D+ = {PRE}{A}番の優れたディグ。セッターが上げやすい好レシーブ。"},
+
+  {skill:"D",level:2,sideRandom:true,
+   players:{A:11},
+   scene:{
+     desc:"{PRE}{A}番のディグ評価は！（普通）。",
+     ball:[{fx:230,fy:96,tx:150,ty:162}],
+     actors:[{n:"A",side:"home",x:150,y:162}],
+     hlHome:[8],hlAway:[],
+   },
+   answer:"{APRE}{A}D!",variants:["{APRE}{A}D!","{APRE}{A}D"],
+   explanation:"{APRE}{A}D! = {PRE}{A}番の普通のディグ。評価なしと同義。"},
+
+  {skill:"D",level:2,sideRandom:true,
+   players:{A:6},
+   scene:{
+     desc:"{PRE}{A}番のディグ評価はー（やや悪い）。",
+     ball:[{fx:230,fy:96,tx:230,ty:193}],
+     actors:[{n:"A",side:"home",x:230,y:193}],
+     hlHome:[1],hlAway:[],result:"bad",
+   },
+   answer:"{APRE}{A}D-",variants:["{APRE}{A}D-"],
+   explanation:"{APRE}{A}D- = {PRE}{A}番のやや悪いディグ。セッターの選択肢が狭まる。"},
+
+  {skill:"E",level:2,sideRandom:true,
    players:{A:1},
    scene:{
-     desc:"相手{A}番（右後）がスパイクを打ったがアウトになった。",
-     ball:[{fx:70,fy:34,tx:40,ty:215,spike:true}],
-     actors:[{n:"A",side:"away",x:70,y:34,jump:true}],
-     hlHome:[],hlAway:[1],result:"miss",
+     desc:"{PRE}{A}番（セッター）のトス評価は+（優れた）。",
+     ball:[{fx:150,fy:162,tx:150,ty:130},{fx:150,fy:130,tx:70,ty:130}],
+     actors:[{n:"A",side:"home",x:150,y:160}],
+     hlHome:[8],hlAway:[],result:"good",
    },
-   answer:"a{A}A=",variants:["a{A}A="],
-   explanation:"相手チームは先頭に「a」を付ける。a{A}A= = 相手{A}番のスパイクアウト。"},
+   answer:"{APRE}{A}E+",variants:["{APRE}{A}E+"],
+   explanation:"{APRE}{A}E+ = {PRE}{A}番の優れたセット。アタッカーが打ちやすいトス。"},
 
-  {skill:"A",level:2,
-   players:{A:9,B:2},
+  {skill:"E",level:2,sideRandom:true,
+   players:{A:2},
    scene:{
-     desc:"相手{A}番がスパイクを打ち、自チーム{B}番がブロックして得点。",
-     ball:[{fx:70,fy:66,tx:70,ty:115},{fx:70,fy:115,tx:90,ty:185}],
-     actors:[{n:"A",side:"away",x:70,y:64,jump:true},{n:"B",side:"home",x:70,y:128,jump:true}],
-     hlHome:[4],hlAway:[9],result:"ace",
+     desc:"{PRE}{A}番（セッター）のトス評価はー（やや悪い）。",
+     ball:[{fx:150,fy:162,tx:150,ty:130},{fx:150,fy:130,tx:230,ty:130}],
+     actors:[{n:"A",side:"home",x:150,y:160}],
+     hlHome:[8],hlAway:[],result:"bad",
    },
-   answer:"a{A}A=",variants:["a{A}A="],
-   explanation:"ブロックされたスパイクは「=」ミス。相手なので先頭に「a」。"},
+   answer:"{APRE}{A}E-",variants:["{APRE}{A}E-"],
+   explanation:"{APRE}{A}E- = {PRE}{A}番のやや悪いセット。アタッカーが打ちにくいトス。"},
 
-  {skill:"S",level:2,
+  {skill:"S",level:2,sideRandom:true,
+   players:{A:7},
+   scene:{
+     desc:"{PRE}{A}番のサーブがエースになった！",
+     ball:[{fx:150,fy:218,tx:150,ty:34}],
+     actors:[{n:"A",side:"home",x:150,y:218}],
+     hlHome:[6],hlAway:[8],result:"ace",
+   },
+   answer:"{APRE}{A}S#",variants:["{APRE}{A}S#"],
+   explanation:"{APRE}{A}S# = {PRE}{A}番のサーブエース。"},
+
+  {skill:"S",level:2,sideRandom:true,
+   players:{A:9},
+   scene:{
+     desc:"{PRE}{A}番のサーブがアウトになった。",
+     ball:[{fx:150,fy:218,tx:150,ty:8}],
+     actors:[{n:"A",side:"home",x:150,y:218}],
+     hlHome:[6],hlAway:[],result:"miss",
+   },
+   answer:"{APRE}{A}S=",variants:["{APRE}{A}S="],
+   explanation:"{APRE}{A}S= = {PRE}{A}番のサーブミス（ネット/アウト）。"},
+
+  {skill:"A",level:2,sideRandom:true,
+   players:{A:5},
+   scene:{
+     desc:"{PRE}{A}番がスパイクを打って得点！",
+     ball:[{fx:70,fy:128,tx:110,ty:66,spike:true}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true}],
+     hlHome:[4],hlAway:[],result:"ace",
+   },
+   answer:"{APRE}{A}A#",variants:["{APRE}{A}A#"],
+   explanation:"{APRE}{A}A# = {PRE}{A}番のスパイク決定。"},
+
+  {skill:"A",level:2,sideRandom:true,
+   players:{A:11},
+   scene:{
+     desc:"{PRE}{A}番のスパイクがアウトになった。",
+     ball:[{fx:70,fy:128,tx:30,ty:215,spike:true}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true}],
+     hlHome:[4],hlAway:[],result:"miss",
+   },
+   answer:"{APRE}{A}A=",variants:["{APRE}{A}A="],
+   explanation:"{APRE}{A}A= = {PRE}{A}番のスパイクミス（アウト/ネット）。"},
+
+  {skill:"B",level:2,sideRandom:true,
+   players:{A:2},
+   scene:{
+     desc:"{PRE}{A}番がブロックして得点！",
+     ball:[{fx:150,fy:96,tx:150,ty:185}],
+     actors:[{n:"A",side:"home",x:150,y:128,jump:true}],
+     hlHome:[3],hlAway:[],result:"ace",
+   },
+   answer:"{APRE}{A}B#",variants:["{APRE}{A}B#"],
+   explanation:"{APRE}{A}B# = {PRE}{A}番のブロック決定。"},
+
+  // ── LV3: コンパウンドコード（15問）────────────────────────────
+  {skill:"S",level:3,
    compound:true,
    players:{A:7,B:3},
    scene:{
-     desc:"相手{A}番がサーブを打ち、自チーム{B}番がレシーブした。コンパウンドコードで入力せよ。",
+     desc:"相手{A}番がサーブを打ち、自チーム{B}番がレシーブした（評価！）。コンパウンドコードで入力せよ。",
      ball:[{fx:55,fy:15,tx:70,ty:195},{fx:70,fy:195,tx:150,ty:162}],
      actors:[{n:"A",side:"away",x:55,y:18},{n:"B",side:"home",x:70,y:193}],
      hlHome:[5],hlAway:[1],
    },
    answer:"a{A}S.{B}!",variants:["a{A}S.{B}!","a{A}S.{B}"],
-   explanation:"相手サーブもコンパウンドで記録。a{A}S.{B}! = 相手{A}番サーブ / 自チーム{B}番が普通のレシーブ（継続）。"},
+   explanation:"a{A}S.{B}! → CODE1: a{A}S（相手{A}番サーブ）/ CODE2: {B}R!（自チーム{B}番の普通レシーブ）。"},
 
-  {skill:"S",level:2,
+  {skill:"S",level:3,
    compound:true,
    players:{A:8,B:3},
    scene:{
-     desc:"相手{A}番がサーブを打ち、自チーム{B}番が優れたレセプションで返した。コンパウンドコードで入力せよ。",
+     desc:"相手{A}番がサーブを打ち、自チーム{B}番が優れたレセプション（+）で返した。コンパウンドコードで入力せよ。",
      ball:[{fx:150,fy:15,tx:70,ty:195},{fx:70,fy:195,tx:150,ty:162}],
      actors:[{n:"A",side:"away",x:150,y:18},{n:"B",side:"home",x:70,y:193}],
      hlHome:[5],hlAway:[6],result:"good",
    },
    answer:"a{A}S.{B}+",variants:["a{A}S.{B}+"],
-   explanation:"a{A}S.{B}+ = 相手{A}番サーブ / 自チーム{B}番の優れたレセプション。S系は「.」後が常にR（レセプション）。"},
+   explanation:"a{A}S.{B}+ → CODE1: a{A}S / CODE2: {B}R+（自チーム{B}番の優れたレセプション）。"},
 
-  {skill:"S",level:2,
+  {skill:"S",level:3,
    compound:true,
    players:{A:6,B:4},
    scene:{
@@ -246,9 +427,9 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[6],result:"miss",
    },
    answer:"a{A}S.{B}=",variants:["a{A}S.{B}="],
-   explanation:"a{A}S.{B}= = 相手{A}番サーブ / 自チーム{B}番がレセプションミス。「=」でミスを示す。結果的に相手サーブエースと同義。"},
+   explanation:"a{A}S.{B}= → CODE1: a{A}S / CODE2: {B}R=（自チーム{B}番のレセプションミス）。相手サーブエースと同義。"},
 
-  {skill:"S",level:2,
+  {skill:"S",level:3,
    compound:true,
    players:{A:7,B:3},
    scene:{
@@ -258,9 +439,9 @@ const QUESTIONS_RAW = [
      hlHome:[5],hlAway:[6],result:"ace",
    },
    answer:"{A}S.{B}=",variants:["{A}S.{B}="],
-   explanation:"{A}S.{B}= → CODE1: {A}S（{A}番サーブ） / CODE2: a{B}R=（相手{B}番のレセプションミス）。結果的にサーブエースと同義。"},
+   explanation:"{A}S.{B}= → CODE1: {A}S / CODE2: a{B}R=（相手{B}番のレセプションミス）。サーブエースと同義。"},
 
-  {skill:"A",level:2,
+  {skill:"A",level:3,
    compound:true,
    players:{A:5,B:8},
    scene:{
@@ -270,9 +451,9 @@ const QUESTIONS_RAW = [
      hlHome:[4],hlAway:[8],result:"ace",
    },
    answer:"{A}A.{B}#",variants:["{A}A.{B}#"],
-   explanation:"{A}A.{B}# → CODE1: {A}A/（ブロックされた） / CODE2: a{B}B#（ブロック決定）。A系・Dなし・受け#→スパイク側は/になる。"},
+   explanation:"{A}A.{B}# → CODE1: {A}A/（ブロックされた）/ CODE2: a{B}B#（ブロック決定）。"},
 
-  {skill:"A",level:2,
+  {skill:"A",level:3,
    compound:true,
    players:{A:2,B:9},
    scene:{
@@ -282,18 +463,7 @@ const QUESTIONS_RAW = [
      hlHome:[2],hlAway:[8],
    },
    answer:"{A}A.{B}D",variants:["{A}A.{B}D","{A}A.{B}D!"],
-   explanation:"{A}A.{B}D → CODE1: {A}A（{A}番スパイク） / CODE2: a{B}D（相手{B}番のディグ）。A系でD付き=ディグ。評価なしは継続。"},
-
-  {skill:"A",level:3,
-   players:{A:5},
-   scene:{
-     desc:"{A}番がレフト平行（PV）をゾーン7に打って決まった！",
-     ball:[{fx:70,fy:128,tx:230,ty:66,spike:true}],
-     actors:[{n:"A",side:"home",x:70,y:126,jump:true}],
-     hlHome:[4],hlAway:[7],result:"ace",
-   },
-   answer:"{A}PV7#",variants:["{A}PV7#"],
-   explanation:"PV = レフト平行（ゾーン4から打つ）。ゾーン7 = AWAY右エリア。{A}PV7# = {A}番・レフト平行・ゾーン7に決定。"},
+   explanation:"{A}A.{B}D → CODE1: {A}A / CODE2: a{B}D（相手{B}番のディグ）。"},
 
   {skill:"A",level:3,
    compound:true,
@@ -305,8 +475,105 @@ const QUESTIONS_RAW = [
      hlHome:[3],hlAway:[1],result:"ace",
    },
    answer:"{A}PA1.{B}#",variants:["{A}PA1.{B}#"],
-   explanation:"{A}PA1.{B}# → CODE1: {A}PA1/（Aクイックがブロックされた） / CODE2: a{B}B#（相手{B}番ブロック決定）。P系アタックもA系と同じルールでコンパウンド展開。"},
+   explanation:"{A}PA1.{B}# → CODE1: {A}PA1/（Aクイックがブロックされた）/ CODE2: a{B}B#（相手{B}番ブロック決定）。"},
 
+  {skill:"S",level:3,
+   compound:true,
+   players:{A:4,B:9},
+   scene:{
+     desc:"{A}番がサーブを打ち、相手{B}番がパーフェクトレセプション（#）で返した。コンパウンドコードで入力せよ。",
+     ball:[{fx:55,fy:222,tx:150,ty:34}],
+     actors:[{n:"A",side:"home",x:55,y:220},{n:"B",side:"away",x:150,y:34}],
+     hlHome:[5],hlAway:[8],result:"good",
+   },
+   answer:"{A}S.{B}#",variants:["{A}S.{B}#"],
+   explanation:"{A}S.{B}# → CODE1: {A}S / CODE2: a{B}R#（相手{B}番のパーフェクトレセプション）。"},
+
+  {skill:"S",level:3,
+   compound:true,
+   players:{A:11,B:7},
+   scene:{
+     desc:"{A}番がサーブを打ち、相手{B}番が優れたレセプション（+）で返した。コンパウンドコードで入力せよ。",
+     ball:[{fx:245,fy:222,tx:150,ty:34}],
+     actors:[{n:"A",side:"home",x:245,y:220},{n:"B",side:"away",x:150,y:34}],
+     hlHome:[1],hlAway:[8],result:"good",
+   },
+   answer:"{A}S.{B}+",variants:["{A}S.{B}+"],
+   explanation:"{A}S.{B}+ → CODE1: {A}S / CODE2: a{B}R+（相手{B}番の優れたレセプション）。"},
+
+  {skill:"S",level:3,
+   compound:true,
+   players:{A:6,B:2},
+   scene:{
+     desc:"{A}番がサーブを打ち、相手{B}番のレセプションがやや悪かった（評価ー）。コンパウンドコードで入力せよ。",
+     ball:[{fx:150,fy:222,tx:230,ty:34}],
+     actors:[{n:"A",side:"home",x:150,y:220},{n:"B",side:"away",x:230,y:34}],
+     hlHome:[6],hlAway:[5],result:"good",
+   },
+   answer:"{A}S.{B}-",variants:["{A}S.{B}-"],
+   explanation:"{A}S.{B}- → CODE1: {A}S / CODE2: a{B}R-（相手{B}番のやや悪いレセプション）。"},
+
+  {skill:"S",level:3,
+   compound:true,
+   players:{A:9,B:5},
+   scene:{
+     desc:"相手{A}番がサーブを打ち、自チーム{B}番がパーフェクトレセプション（#）で返した。コンパウンドコードで入力せよ。",
+     ball:[{fx:150,fy:15,tx:70,ty:195}],
+     actors:[{n:"A",side:"away",x:150,y:18},{n:"B",side:"home",x:70,y:193}],
+     hlHome:[5],hlAway:[6],result:"good",
+   },
+   answer:"a{A}S.{B}#",variants:["a{A}S.{B}#"],
+   explanation:"a{A}S.{B}# → CODE1: a{A}S（相手{A}番サーブ）/ CODE2: {B}R#（自チーム{B}番のパーフェクトレセプション）。"},
+
+  {skill:"A",level:3,
+   compound:true,
+   players:{A:9,B:2},
+   scene:{
+     desc:"相手{A}番がスパイクを打ち、自チーム{B}番がブロック決定した。コンパウンドコードで入力せよ。",
+     ball:[{fx:70,fy:66,tx:70,ty:115},{fx:70,fy:115,tx:90,ty:185}],
+     actors:[{n:"A",side:"away",x:70,y:64,jump:true},{n:"B",side:"home",x:70,y:128,jump:true}],
+     hlHome:[4],hlAway:[9],result:"ace",
+   },
+   answer:"a{A}A.{B}#",variants:["a{A}A.{B}#"],
+   explanation:"a{A}A.{B}# → CODE1: a{A}A/（相手{A}番のスパイクがブロックされた）/ CODE2: {B}B#（自チーム{B}番のブロック決定）。"},
+
+  {skill:"A",level:3,
+   compound:true,
+   players:{A:11,B:8},
+   scene:{
+     desc:"相手{A}番がスパイクを打ち、自チーム{B}番がディグで返した。コンパウンドコードで入力せよ。",
+     ball:[{fx:230,fy:66,tx:150,ty:162}],
+     actors:[{n:"A",side:"away",x:230,y:64,jump:true},{n:"B",side:"home",x:150,y:162}],
+     hlHome:[8],hlAway:[],result:"good",
+   },
+   answer:"a{A}A.{B}D",variants:["a{A}A.{B}D","a{A}A.{B}D!"],
+   explanation:"a{A}A.{B}D → CODE1: a{A}A / CODE2: {B}D（自チーム{B}番のディグ）。"},
+
+  {skill:"A",level:3,
+   compound:true,
+   players:{A:3,B:6},
+   scene:{
+     desc:"{A}番がスパイクを打ち、相手{B}番が優れたディグで返した。コンパウンドコードで入力せよ。",
+     ball:[{fx:70,fy:128,tx:150,ty:66,spike:true}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true},{n:"B",side:"away",x:150,y:66}],
+     hlHome:[4],hlAway:[8],result:"good",
+   },
+   answer:"{A}A.{B}D+",variants:["{A}A.{B}D+"],
+   explanation:"{A}A.{B}D+ → CODE1: {A}A / CODE2: a{B}D+（相手{B}番の優れたディグ）。"},
+
+  {skill:"A",level:3,
+   compound:true,
+   players:{A:8,B:4},
+   scene:{
+     desc:"{A}番がスパイクを打ち、相手{B}番がブロックミスして得点。コンパウンドコードで入力せよ。",
+     ball:[{fx:70,fy:128,tx:150,ty:66,spike:true}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true},{n:"B",side:"away",x:150,y:66,jump:true}],
+     hlHome:[4],hlAway:[8],result:"ace",
+   },
+   answer:"{A}A.{B}=",variants:["{A}A.{B}="],
+   explanation:"{A}A.{B}= → CODE1: {A}A#（スパイク決定）/ CODE2: a{B}B=（相手{B}番のブロックミス）。"},
+
+  // ── LV4: ゾーン・サーブ種別詳細（12問）─────────────────────
   {skill:"S",level:4,
    players:{A:7},
    scene:{
@@ -316,7 +583,7 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[2],
    },
    answer:"{A}SM1",variants:["{A}SM1"],
-   explanation:"SM = ジャンプフローター。ゾーン1（右後）から打った。{A}SM1 = {A}番・ジャンプフローター・ゾーン1から。"},
+   explanation:"SM = ジャンプフローター。ゾーン1（右後）から = {A}SM1。"},
 
   {skill:"S",level:4,
    players:{A:11},
@@ -327,7 +594,7 @@ const QUESTIONS_RAW = [
      hlHome:[6],hlAway:[],result:"miss",
    },
    answer:"{A}SQ6=",variants:["{A}SQ6="],
-   explanation:"SQ = ジャンピングサーブ（トップスピン）。ゾーン6 = 中央後衛。ネットは「=」ミス。"},
+   explanation:"SQ = ジャンピングサーブ（トップスピン）。ゾーン6からネット = {A}SQ6=。"},
 
   {skill:"S",level:4,
    players:{A:1},
@@ -338,7 +605,7 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[5],result:"ace",
    },
    answer:"{A}S1#",variants:["{A}S1#","{A}S#"],
-   explanation:"ゾーン番号はスキルの直後。{A}S1# = {A}番・サーブ・ゾーン1から・決定。"},
+   explanation:"ゾーン番号はスキルの直後。{A}S1# = ゾーン1からサーブエース。"},
 
   {skill:"S",level:4,
    players:{A:9},
@@ -349,7 +616,7 @@ const QUESTIONS_RAW = [
      hlHome:[6],hlAway:[8],
    },
    answer:"{A}SM6",variants:["{A}SM6"],
-   explanation:"SM = ジャンプフローター。ゾーン6（中後）から打った = {A}SM6。"},
+   explanation:"SM = ジャンプフローター。ゾーン6（中後）から = {A}SM6。"},
 
   {skill:"S",level:4,
    compound:true,
@@ -361,43 +628,183 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[8],result:"good",
    },
    answer:"{A}SM.{B}+",variants:["{A}SM.{B}+"],
-   explanation:"{A}SM.{B}+ → CODE1: {A}SM（{A}番J.フローター） / CODE2: a{B}R+（相手{B}番の優れたレセプション）。S系は「.」後がR（レセプション）になる。"},
+   explanation:"{A}SM.{B}+ → CODE1: {A}SM（J.フローター）/ CODE2: a{B}R+（相手{B}番の優れたレセプション）。"},
+
+  {skill:"A",level:4,
+   players:{A:5},
+   scene:{
+     desc:"{A}番がレフト平行（PV）をゾーン7に打って決まった！",
+     ball:[{fx:70,fy:128,tx:230,ty:66,spike:true}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true}],
+     hlHome:[4],hlAway:[7],result:"ace",
+   },
+   answer:"{A}PV7#",variants:["{A}PV7#"],
+   explanation:"PV = レフト平行。ゾーン7 = AWAY右エリア。{A}PV7#。"},
 
   {skill:"S",level:4,
+   players:{A:6},
+   scene:{
+     desc:"{A}番がゾーン1（右後）からジャンピングサーブを打ちエースになった！",
+     ball:[{fx:245,fy:222,tx:150,ty:34}],
+     actors:[{n:"A",side:"home",x:245,y:220,jump:true}],
+     hlHome:[1],hlAway:[8],result:"ace",
+   },
+   answer:"{A}SQ1#",variants:["{A}SQ1#"],
+   explanation:"SQ = ジャンピングサーブ。ゾーン1からエース = {A}SQ1#。"},
+
+  {skill:"S",level:4,
+   players:{A:14},
+   scene:{
+     desc:"{A}番がゾーン5（左後）からジャンプフローターサーブを打った。",
+     ball:[{fx:55,fy:222,tx:150,ty:66,curve:true}],
+     actors:[{n:"A",side:"home",x:55,y:220,jump:true}],
+     hlHome:[5],hlAway:[8],
+   },
+   answer:"{A}SM5",variants:["{A}SM5"],
+   explanation:"SM = ジャンプフローター。ゾーン5（左後）から = {A}SM5。"},
+
+  {skill:"A",level:4,
+   players:{A:3},
+   scene:{
+     desc:"{A}番がライト平行（PZ）をゾーン7に打って決まった！",
+     ball:[{fx:230,fy:128,tx:70,ty:66,spike:true}],
+     actors:[{n:"A",side:"home",x:230,y:126,jump:true}],
+     hlHome:[2],hlAway:[7],result:"ace",
+   },
+   answer:"{A}PZ7#",variants:["{A}PZ7#"],
+   explanation:"PZ = ライト平行（ゾーン2から打つ）。ゾーン7 = AWAY右エリア。{A}PZ7#。"},
+
+  {skill:"A",level:4,
+   players:{A:8},
+   scene:{
+     desc:"{A}番がレフト平行（PV）をゾーン4に打って決まった！",
+     ball:[{fx:70,fy:128,tx:70,ty:66,spike:true}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true}],
+     hlHome:[4],hlAway:[4],result:"ace",
+   },
+   answer:"{A}PV4#",variants:["{A}PV4#"],
+   explanation:"PV = レフト平行。ゾーン4 = AWAYの左前。{A}PV4#。"},
+
+  {skill:"S",level:4,
+   compound:true,
+   players:{A:2,B:7},
+   scene:{
+     desc:"{A}番がゾーン1からジャンピングサーブを打ち、相手{B}番がレセプションミスした。コンパウンドコードで入力せよ。",
+     ball:[{fx:245,fy:222,tx:150,ty:34}],
+     actors:[{n:"A",side:"home",x:245,y:220,jump:true},{n:"B",side:"away",x:150,y:34}],
+     hlHome:[1],hlAway:[8],result:"ace",
+   },
+   answer:"{A}SQ1.{B}=",variants:["{A}SQ1.{B}="],
+   explanation:"{A}SQ1.{B}= → CODE1: {A}SQ1（ゾーン1からジャンピングサーブ）/ CODE2: a{B}R=（相手{B}番のレセプションミス）。"},
+
+  {skill:"S",level:4,
+   compound:true,
+   players:{A:5,B:3},
+   scene:{
+     desc:"{A}番がゾーン6からジャンプフローターを打ち、相手{B}番が優れたレセプション（+）で返した。コンパウンドコードで入力せよ。",
+     ball:[{fx:150,fy:222,tx:150,ty:66,curve:true},{fx:150,fy:66,tx:150,ty:130}],
+     actors:[{n:"A",side:"home",x:150,y:220,jump:true},{n:"B",side:"away",x:150,y:64}],
+     hlHome:[6],hlAway:[8],result:"good",
+   },
+   answer:"{A}SM6.{B}+",variants:["{A}SM6.{B}+"],
+   explanation:"{A}SM6.{B}+ → CODE1: {A}SM6（ゾーン6からジャンプフローター）/ CODE2: a{B}R+（相手{B}番の優れたレセプション）。"},
+
+  // ── LV5: マルチコード（8問）────────────────────────────────
+  {skill:"S",level:5,
    multiCode:true,
    players:{A:1,B:3,C:4,D:6},
    scene:{
-     desc:"{A}番がサーブを打ち、相手{B}番がレセプション（評価#）。続いて相手{C}番がレフト平行を打ち、味方{D}番がブロックミス。2つのコードをスペースで区切って入力せよ。",
+     desc:"{A}番がサーブを打ち、相手{B}番がレセプション（評価#）。続いて相手{C}番がレフト平行を打ち、味方{D}番がブロックミス。2コードをスペースで区切って入力せよ。",
      ball:[{fx:240,fy:220,tx:150,ty:70},{fx:150,fy:70,tx:240,ty:180}],
-     actors:[{n:"A",side:"home",x:240,y:218,jump:false},{n:"B",side:"away",x:150,y:68},{n:"C",side:"away",x:180,y:80,jump:true},{n:"D",side:"home",x:200,y:190}],
+     actors:[{n:"A",side:"home",x:240,y:218},{n:"B",side:"away",x:150,y:68},{n:"C",side:"away",x:180,y:80,jump:true},{n:"D",side:"home",x:200,y:190}],
      hlHome:[3],hlAway:[6,8],result:"bad",
    },
    answer:"a{B}R# a{C}PV.{D}=",variants:["a{B}R# a{C}PV.{D}="],
-   explanation:"CODE1: a{B}R#（相手{B}番のパーフェクトレセプション） / CODE2: a{C}PV.{D}=（相手{C}番のレフト平行→味方{D}番がブロックミス）。2つのコードはスペースで区切る。"},
+   explanation:"CODE1: a{B}R#（相手{B}番のパーフェクトレセプション）/ CODE2: a{C}PV.{D}=（相手{C}番のレフト平行→味方{D}番がブロックミス）。"},
 
-  {skill:"A",level:4,
+  {skill:"A",level:5,
    multiCode:true,
    players:{A:5,B:2,C:7,D:9},
    scene:{
-     desc:"{A}番がジャンプサーブを打ち、相手{B}番がレセプション（評価-）。続いて相手{C}番がライト平行を打ち、味方{D}番がブロックアウト。2つのコードをスペースで区切って入力せよ。",
+     desc:"{A}番がジャンプサーブを打ち、相手{B}番がレセプション（評価-）。続いて相手{C}番がライト平行を打ち、味方{D}番がブロックアウト。2コードをスペースで区切って入力せよ。",
      ball:[{fx:245,fy:215,tx:150,ty:75},{fx:150,fy:75,tx:250,ty:190}],
      actors:[{n:"A",side:"home",x:245,y:212,jump:true},{n:"B",side:"away",x:150,y:73},{n:"C",side:"away",x:170,y:85,jump:true},{n:"D",side:"home",x:220,y:185}],
      hlHome:[1,4],hlAway:[5,7],result:"bad",
    },
    answer:"a{B}R- a{C}PZ.{D}/",variants:["a{B}R- a{C}PZ.{D}/"],
-   explanation:"CODE1: a{B}R-（相手{B}番のやや悪いレセプション） / CODE2: a{C}PZ.{D}/（相手{C}番のライト平行→味方{D}番がブロックアウト）。"},
+   explanation:"CODE1: a{B}R-（相手{B}番のやや悪いレセプション）/ CODE2: a{C}PZ.{D}/（相手{C}番のライト平行→味方{D}番がブロックアウト）。"},
 
-  {skill:"B",level:4,
+  {skill:"B",level:5,
    multiCode:true,
    players:{A:2,B:8,C:6,D:4},
    scene:{
-     desc:"{A}番がジャンプフローターサーブを打ち、相手{B}番がレセプション（評価!）。続いて相手{C}番がAクイックを打ち、味方{D}番がブロック決定。2つのコードをスペースで区切って入力せよ。",
+     desc:"{A}番がジャンプフローターサーブを打ち、相手{B}番がレセプション（評価!）。続いて相手{C}番がAクイックを打ち、味方{D}番がブロック決定。2コードをスペースで区切って入力せよ。",
      ball:[{fx:242,fy:218,tx:155,ty:72},{fx:155,fy:72,tx:200,ty:185}],
      actors:[{n:"A",side:"home",x:242,y:215,jump:true},{n:"B",side:"away",x:155,y:70},{n:"C",side:"away",x:175,y:82,jump:true},{n:"D",side:"home",x:205,y:183}],
      hlHome:[2,5],hlAway:[6,9],result:"good",
    },
    answer:"a{B}R! a{C}PA.{D}#",variants:["a{B}R! a{C}PA.{D}#"],
-   explanation:"CODE1: a{B}R!（相手{B}番の普通レセプション） / CODE2: a{C}PA.{D}#（相手{C}番のAクイック→味方{D}番がブロック決定）。"},
+   explanation:"CODE1: a{B}R!（相手{B}番の普通レセプション）/ CODE2: a{C}PA.{D}#（相手{C}番のAクイック→味方{D}番がブロック決定）。"},
+
+  {skill:"R",level:5,
+   multiCode:true,
+   players:{A:2,B:5,C:8},
+   scene:{
+     desc:"{A}番がパーフェクトレセプション（#）。続いて{B}番がレフト平行を打ち、相手{C}番がブロック決定。2コードをスペースで区切って入力せよ。",
+     ball:[{fx:150,fy:15,tx:70,ty:193},{fx:70,fy:128,tx:230,ty:66,spike:true}],
+     actors:[{n:"A",side:"home",x:70,y:193},{n:"B",side:"home",x:70,y:126,jump:true},{n:"C",side:"away",x:150,y:66,jump:true}],
+     hlHome:[5,4],hlAway:[7],result:"bad",
+   },
+   answer:"{A}R# {B}PV.{C}#",variants:["{A}R# {B}PV.{C}#"],
+   explanation:"CODE1: {A}R#（{A}番のパーフェクトレセプション）/ CODE2: {B}PV.{C}#（{B}番のレフト平行→相手{C}番ブロック決定）。"},
+
+  {skill:"R",level:5,
+   multiCode:true,
+   players:{A:4,B:7,C:3},
+   scene:{
+     desc:"{A}番のレセプション評価は+。続いて{B}番がAクイックを打ち、相手{C}番が優れたディグで返した。2コードをスペースで区切って入力せよ。",
+     ball:[{fx:150,fy:15,tx:70,ty:193},{fx:150,fy:128,tx:150,ty:66,spike:true}],
+     actors:[{n:"A",side:"home",x:70,y:193},{n:"B",side:"home",x:150,y:126,jump:true},{n:"C",side:"away",x:70,y:66}],
+     hlHome:[5,3],hlAway:[],result:"good",
+   },
+   answer:"{A}R+ {B}PA.{C}D+",variants:["{A}R+ {B}PA.{C}D+"],
+   explanation:"CODE1: {A}R+（{A}番の優れたレセプション）/ CODE2: {B}PA.{C}D+（{B}番のAクイック→相手{C}番の優れたディグ）。"},
+
+  {skill:"A",level:5,
+   multiCode:true,
+   players:{A:6,B:9,C:2},
+   scene:{
+     desc:"相手{A}番のレセプションがパーフェクト（#）。続いて相手{B}番がライト平行を打ち、味方{C}番がブロックミス。2コードをスペースで区切って入力せよ。",
+     ball:[{fx:150,fy:15,tx:150,ty:65},{fx:230,fy:66,tx:150,ty:115,spike:true}],
+     actors:[{n:"A",side:"away",x:150,y:34},{n:"B",side:"away",x:230,y:64,jump:true},{n:"C",side:"home",x:150,y:128,jump:true}],
+     hlHome:[],hlAway:[8,2],result:"bad",
+   },
+   answer:"a{A}R# a{B}PZ.{C}=",variants:["a{A}R# a{B}PZ.{C}="],
+   explanation:"CODE1: a{A}R#（相手{A}番のパーフェクトレセプション）/ CODE2: a{B}PZ.{C}=（相手{B}番のライト平行→味方{C}番がブロックミス）。"},
+
+  {skill:"D",level:5,
+   multiCode:true,
+   players:{A:3,B:8,C:5},
+   scene:{
+     desc:"{A}番のレセプション評価はー。続いて{B}番がレフト平行を打ち、相手{C}番がディグで返した。2コードをスペースで区切って入力せよ。",
+     ball:[{fx:150,fy:15,tx:230,ty:193},{fx:70,fy:128,tx:230,ty:66,spike:true}],
+     actors:[{n:"A",side:"home",x:230,y:193},{n:"B",side:"home",x:70,y:126,jump:true},{n:"C",side:"away",x:230,y:66}],
+     hlHome:[1,4],hlAway:[],result:"good",
+   },
+   answer:"{A}R- {B}PV.{C}D",variants:["{A}R- {B}PV.{C}D"],
+   explanation:"CODE1: {A}R-（{A}番のやや悪いレセプション）/ CODE2: {B}PV.{C}D（{B}番のレフト平行→相手{C}番がディグ）。"},
+
+  {skill:"B",level:5,
+   multiCode:true,
+   players:{A:7,B:2,C:6},
+   scene:{
+     desc:"相手{A}番のレセプション評価は+。続いて相手{B}番がゾーン1方向にAクイックを打ち、味方{C}番がブロック決定。2コードをスペースで区切って入力せよ。",
+     ball:[{fx:150,fy:15,tx:150,ty:65},{fx:150,fy:66,tx:70,ty:115,spike:true}],
+     actors:[{n:"A",side:"away",x:150,y:34},{n:"B",side:"away",x:150,y:66,jump:true},{n:"C",side:"home",x:70,y:128,jump:true}],
+     hlHome:[4],hlAway:[8,3],result:"ace",
+   },
+   answer:"a{A}R+ a{B}PA1.{C}#",variants:["a{A}R+ a{B}PA1.{C}#"],
+   explanation:"CODE1: a{A}R+（相手{A}番の優れたレセプション）/ CODE2: a{B}PA1.{C}#（相手{B}番のAクイック→味方{C}番がブロック決定）。"},
 ];
 
 const QUESTIONS = QUESTIONS_RAW.map((q, i) => ({ ...q, id: i + 1 }));
@@ -417,7 +824,7 @@ const RANKS = [
 const getRank     = xp => [...RANKS].reverse().find(r => xp >= r.xpReq) || RANKS[0];
 const getNextRank = xp => RANKS.find(r => xp < r.xpReq) || null;
 
-const LEVEL_UNLOCK_XP = { 1: 0, 2: 150, 3: 400, 4: 900 };
+const LEVEL_UNLOCK_XP = { 1: 0, 2: 150, 3: 400, 4: 900, 5: 1800 };
 const getMaxUnlockedLevel = (xp) =>
   Math.max(...Object.entries(LEVEL_UNLOCK_XP).filter(([, req]) => xp >= req).map(([l]) => Number(l)));
 
@@ -439,25 +846,27 @@ function parseCompound(code) {
 function expandCompound(code) {
   const p = parseCompound(code);
   if (!p) return null;
-  const leftSkillPart = p.left.replace(/^\d+/, "");
+  const isAway = p.left.startsWith("a");
+  const leftSkillPart = p.left.replace(/^a/, "").replace(/^\d+/, "");
   const isServe  = leftSkillPart.startsWith("S");
   const isAttack = leftSkillPart.startsWith("A") || leftSkillPart.startsWith("P");
+  const recv = isAway ? "" : "a";
   let code1, code2;
   if (isServe) {
     code1 = p.left;
-    code2 = `a${p.recvNum}R${p.recvEval}`;
+    code2 = `${recv}${p.recvNum}R${p.recvEval}`;
   } else if (isAttack) {
     if (p.hasD) {
       code1 = p.left;
-      code2 = `a${p.recvNum}D${p.recvEval}`;
+      code2 = `${recv}${p.recvNum}D${p.recvEval}`;
     } else {
       const attackEval = p.recvEval === "#" ? "/" : p.recvEval === "=" ? "#" : "";
       code1 = `${p.left}${attackEval}`;
-      code2 = `a${p.recvNum}B${p.recvEval}`;
+      code2 = `${recv}${p.recvNum}B${p.recvEval}`;
     }
   } else {
     code1 = p.left;
-    code2 = `a${p.recvNum}D${p.recvEval}`;
+    code2 = `${recv}${p.recvNum}D${p.recvEval}`;
   }
   return { code1, code2, isServe, isAttack, hasD: p.hasD };
 }
@@ -467,20 +876,24 @@ function expandCompound(code) {
 // ══════════════════════════════════════════════════════════════
 const JERSEY_POOL = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
-function randomizeQuestion(q, cycleNum = 0) {
-  let base = q;
-  if (cycleNum >= 1 && base.cycle2?.length > 0) {
-    const c2 = base.cycle2[Math.floor(Math.random() * base.cycle2.length)];
-    base = {
+function randomizeQuestion(q) {
+  const base = q;
+  const isAway = base.sideRandom ? Math.random() < 0.5 : false;
+  const PRE  = isAway ? "相手" : "";
+  const APRE = isAway ? "a"   : "";
+
+  if (!base.players) {
+    const sub2 = str => typeof str === "string"
+      ? str.replace(/\{PRE\}/g, PRE).replace(/\{APRE\}/g, APRE) : str;
+    return {
       ...base,
-      players: { ...base.players, ...(c2.extraPlayers || {}) },
-      scene: { ...base.scene, desc: base.scene.desc + " " + c2.descSuffix },
-      answer: c2.answer,
-      variants: c2.variants,
-      explanation: c2.explanation ?? base.explanation,
+      scene: { ...base.scene, desc: sub2(base.scene.desc) },
+      answer: sub2(base.answer),
+      variants: base.variants.map(sub2),
+      explanation: sub2(base.explanation ?? ""),
     };
   }
-  if (!base.players) return base;
+
   const slots = Object.keys(base.players);
   const used = new Set();
   const numMap = {};
@@ -491,22 +904,37 @@ function randomizeQuestion(q, cycleNum = 0) {
     used.add(n);
     numMap[slot] = n;
   }
+
   const sub = str => typeof str === "string"
-    ? str.replace(/\{(\w)\}/g, (_, k) => numMap[k] ?? k)
+    ? str.replace(/\{PRE\}/g, PRE).replace(/\{APRE\}/g, APRE)
+         .replace(/\{(\w)\}/g, (_, k) => numMap[k] ?? k)
     : str;
+
+  const flipBall = segs => segs?.map(seg => ({
+    ...seg,
+    fx: 300 - seg.fx, fy: Math.max(10, 230 - seg.fy),
+    tx: 300 - seg.tx, ty: Math.max(10, 230 - seg.ty),
+  })) ?? [];
+
   return {
     ...base,
     scene: {
       ...base.scene,
       desc: sub(base.scene.desc),
-      actors: base.scene.actors?.map(a => ({
-        ...a,
-        n: typeof a.n === "string" ? (numMap[a.n] ?? a.n) : a.n,
-      })),
+      ball: base.sideRandom && isAway ? flipBall(base.scene.ball) : base.scene.ball,
+      hlHome: base.sideRandom && isAway ? (base.scene.hlAway || []) : base.scene.hlHome,
+      hlAway: base.sideRandom && isAway ? (base.scene.hlHome || []) : base.scene.hlAway,
+      actors: base.scene.actors?.map(a => {
+        const resolvedN = typeof a.n === "string" ? (numMap[a.n] ?? a.n) : a.n;
+        if (base.sideRandom && isAway) {
+          return { ...a, n: resolvedN, side: "away", x: 300 - a.x, y: Math.max(20, 230 - a.y) };
+        }
+        return { ...a, n: resolvedN };
+      }),
     },
     answer: sub(base.answer),
     variants: base.variants.map(sub),
-    explanation: sub(base.explanation),
+    explanation: sub(base.explanation ?? ""),
   };
 }
 
@@ -814,7 +1242,7 @@ function HomeScreen({ score, maxStreak, xp, rank, xpPct, nextRank, levelFilter, 
         </div>
         <div style={{display:"flex",gap:6,alignItems:"center"}}>
           <span style={{fontSize:10,color:C.muted,fontFamily:"monospace",letterSpacing:1}}>難易度</span>
-          {[1,2,3,4].map(l => {
+          {[1,2,3,4,5].map(l => {
             const locked = l > maxUnlockedLevel;
             const active = levelFilter === l;
             return (
@@ -881,7 +1309,7 @@ function ProgressScreen({ stats, xp, rank, xpPct, nextRank, onBack }) {
 
         <div style={{fontSize:10,color:C.muted,letterSpacing:2,fontFamily:"monospace",marginBottom:8}}>レベル解放状況</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:16}}>
-          {[1,2,3,4].map(l => {
+          {[1,2,3,4,5].map(l => {
             const req  = LEVEL_UNLOCK_XP[l];
             const done = xp >= req;
             return (
@@ -1220,8 +1648,7 @@ export default function VolleyCoder() {
   useEffect(() => {
     if (screen === "game") {
       setAnimKey(k => k + 1);
-      const cycleNum = Math.floor(qIndex / qs.length);
-      setRq(randomizeQuestion(q, cycleNum));
+      setRq(randomizeQuestion(q));
     }
   }, [screen, qIndex]);
 
