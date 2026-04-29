@@ -102,7 +102,12 @@ const QUESTIONS_RAW = [
      hlHome:[1],hlAway:[],
    },
    answer:"{A}S",variants:["{A}S"],
-   explanation:"基本形：背番号＋S。評価なしはラリーが続いたことを意味します。"},
+   explanation:"基本形：背番号＋S。評価なしはラリーが続いたことを意味します。",
+   cycle2:[
+     {extraPlayers:{B:4},descSuffix:"相手{B}番のレセプション評価は+。",answer:"{A}S.{B}+",variants:["{A}S.{B}+"],explanation:"S系コンパウンド。{A}S.{B}+ → CODE1:{A}S / CODE2:a{B}R+（優れたレセプション）。"},
+     {extraPlayers:{B:4},descSuffix:"相手{B}番のレセプション評価は！。",answer:"{A}S.{B}!",variants:["{A}S.{B}!","{A}S"],explanation:"S系コンパウンド。{A}S.{B}! → CODE1:{A}S / CODE2:a{B}R!（普通のレセプション）。"},
+     {extraPlayers:{B:4},descSuffix:"相手{B}番のレセプション評価は－。",answer:"{A}S.{B}-",variants:["{A}S.{B}-"],explanation:"S系コンパウンド。{A}S.{B}- → CODE1:{A}S / CODE2:a{B}R-（やや悪いレセプション）。"},
+   ]},
 
   {skill:"S",level:1,
    players:{A:3},
@@ -146,7 +151,11 @@ const QUESTIONS_RAW = [
      hlHome:[8],hlAway:[],
    },
    answer:"{A}E",variants:["{A}E"],
-   explanation:"E = sEt（トス）。セッターの背番号＋E。ゾーン8は中央。"},
+   explanation:"E = sEt（トス）。セッターの背番号＋E。ゾーン8は中央。",
+   cycle2:[
+     {descSuffix:"このトスの評価は+。",answer:"{A}E+",variants:["{A}E+"],explanation:"E+ = 優れたセット。アタッカーが打ちやすいトス。"},
+     {descSuffix:"このトスの評価は－。",answer:"{A}E-",variants:["{A}E-"],explanation:"E- = やや悪いセット。アタッカーが打ちにくいトス。"},
+   ]},
 
   {skill:"D",level:1,
    players:{A:8},
@@ -157,7 +166,11 @@ const QUESTIONS_RAW = [
      hlHome:[8],hlAway:[],
    },
    answer:"{A}D",variants:["{A}D","{A}D!"],
-   explanation:"D = Dig（スパイクレシーブ）。ゾーン8（センター）でスパイクを拾った。"},
+   explanation:"D = Dig（スパイクレシーブ）。ゾーン8（センター）でスパイクを拾った。",
+   cycle2:[
+     {descSuffix:"このディグの評価は+。",answer:"{A}D+",variants:["{A}D+"],explanation:"D+ = 優れたディグ。セッターが上げやすい好レシーブ。"},
+     {descSuffix:"このディグは＝（ミス）だった。",answer:"{A}D=",variants:["{A}D="],explanation:"D= = ディグミス。スパイクを拾えず失点。"},
+   ]},
 
   {skill:"A",level:2,
    players:{A:1},
@@ -400,9 +413,21 @@ function expandCompound(code) {
 // ══════════════════════════════════════════════════════════════
 const JERSEY_POOL = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
-function randomizeQuestion(q) {
-  if (!q.players) return q;
-  const slots = Object.keys(q.players);
+function randomizeQuestion(q, cycleNum = 0) {
+  let base = q;
+  if (cycleNum >= 1 && base.cycle2?.length > 0) {
+    const c2 = base.cycle2[Math.floor(Math.random() * base.cycle2.length)];
+    base = {
+      ...base,
+      players: { ...base.players, ...(c2.extraPlayers || {}) },
+      scene: { ...base.scene, desc: base.scene.desc + " " + c2.descSuffix },
+      answer: c2.answer,
+      variants: c2.variants,
+      explanation: c2.explanation ?? base.explanation,
+    };
+  }
+  if (!base.players) return base;
+  const slots = Object.keys(base.players);
   const used = new Set();
   const numMap = {};
   for (const slot of slots) {
@@ -416,18 +441,18 @@ function randomizeQuestion(q) {
     ? str.replace(/\{(\w)\}/g, (_, k) => numMap[k] ?? k)
     : str;
   return {
-    ...q,
+    ...base,
     scene: {
-      ...q.scene,
-      desc: sub(q.scene.desc),
-      actors: q.scene.actors?.map(a => ({
+      ...base.scene,
+      desc: sub(base.scene.desc),
+      actors: base.scene.actors?.map(a => ({
         ...a,
         n: typeof a.n === "string" ? (numMap[a.n] ?? a.n) : a.n,
       })),
     },
-    answer: sub(q.answer),
-    variants: q.variants.map(sub),
-    explanation: sub(q.explanation),
+    answer: sub(base.answer),
+    variants: base.variants.map(sub),
+    explanation: sub(base.explanation),
   };
 }
 
@@ -1141,7 +1166,8 @@ export default function VolleyCoder() {
   useEffect(() => {
     if (screen === "game") {
       setAnimKey(k => k + 1);
-      setRq(randomizeQuestion(q));
+      const cycleNum = Math.floor(qIndex / qs.length);
+      setRq(randomizeQuestion(q, cycleNum));
     }
   }, [screen, qIndex]);
 
