@@ -4,7 +4,7 @@ import { C, KB_ROWS } from "../constants.js";
 export default function SoftKeyboard({ onKey, onSubmit }) {
   const [hint, setHint] = useState(null);
   return (
-    <div style={{background:"#070d18",borderTop:\`1px solid \${C.border}\`,padding:"3px 6px 6px",flexShrink:0}}>
+    <div style={{background:"#070d18",borderTop:`1px solid ${C.border}`,padding:"3px 6px 6px",flexShrink:0}}>
       <div style={{height:12,marginBottom:3,textAlign:"center",fontSize:10,fontFamily:"monospace",letterSpacing:1,color:hint?C.cyan:"transparent",transition:"color 0.15s"}}>
         {hint || "　"}
       </div>
@@ -30,8 +30,8 @@ export default function SoftKeyboard({ onKey, onSubmit }) {
                   minWidth: k.wide ? 48 : 26,
                   maxWidth: k.wide ? 70 : 44,
                   height:36,
-                  background: isBs ? "rgba(255,51,68,0.1)" : isUtil ? "rgba(255,255,255,0.04)" : isHex ? \`\${k.color}18\` : "rgba(255,255,255,0.05)",
-                  border:\`1px solid \${isBs ? "rgba(255,51,68,0.35)" : isUtil ? C.border : isHex ? \`\${k.color}55\` : C.border}\`,
+                  background: isBs ? "rgba(255,51,68,0.1)" : isUtil ? "rgba(255,255,255,0.04)" : isHex ? `${k.color}18` : "rgba(255,255,255,0.05)",
+                  border:`1px solid ${isBs ? "rgba(255,51,68,0.35)" : isUtil ? C.border : isHex ? `${k.color}55` : C.border}`,
                   borderRadius:7,
                   color:k.color || C.text,
                   fontFamily:"'JetBrains Mono',monospace",
@@ -41,7 +41,7 @@ export default function SoftKeyboard({ onKey, onSubmit }) {
                   display:"flex",alignItems:"center",justifyContent:"center",
                   WebkitTapHighlightColor:"transparent",
                   padding:0,
-                  boxShadow: (isUtil || !isHex) ? "none" : \`0 2px 6px \${k.color}20\`,
+                  boxShadow: (isUtil || !isHex) ? "none" : `0 2px 6px ${k.color}20`,
                 }}
               >{k.label}</button>
             );

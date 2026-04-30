@@ -25,19 +25,19 @@ export function expandCompound(code) {
   let code1, code2;
   if (isServe) {
     code1 = p.left;
-    code2 = \`\${recv}\${p.recvNum}R\${p.recvEval}\`;
+    code2 = `${recv}${p.recvNum}R${p.recvEval}`;
   } else if (isAttack) {
     if (p.hasD) {
       code1 = p.left;
-      code2 = \`\${recv}\${p.recvNum}D\${p.recvEval}\`;
+      code2 = `${recv}${p.recvNum}D${p.recvEval}`;
     } else {
       const attackEval = p.recvEval === "#" ? "/" : p.recvEval === "=" ? "#" : "";
-      code1 = \`\${p.left}\${attackEval}\`;
-      code2 = \`\${recv}\${p.recvNum}B\${p.recvEval}\`;
+      code1 = `${p.left}${attackEval}`;
+      code2 = `${recv}${p.recvNum}B${p.recvEval}`;
     }
   } else {
     code1 = p.left;
-    code2 = \`\${recv}\${p.recvNum}D\${p.recvEval}\`;
+    code2 = `${recv}${p.recvNum}D${p.recvEval}`;
   }
   return { code1, code2, isServe, isAttack, hasD: p.hasD };
 }

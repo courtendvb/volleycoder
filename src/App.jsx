@@ -81,7 +81,7 @@ export default function VolleyCoder() {
 
   useEffect(() => {
     if (maxUnlockedLevel > prevMaxLevel.current) {
-      setUnlockAnim(\`Lv.\${maxUnlockedLevel} 解放！\`);
+      setUnlockAnim(`Lv.${maxUnlockedLevel} 解放！`);
       setLevelFilter(maxUnlockedLevel);
       const timer = setTimeout(() => setUnlockAnim(null), 3000);
       prevMaxLevel.current = maxUnlockedLevel;
@@ -141,7 +141,7 @@ export default function VolleyCoder() {
       setScore(s => s + 1);
       setStreak(s => { const ns = s + 1; setMaxStreak(m => Math.max(m, ns)); return ns; });
       setXp(x => x + gainXp);
-      setXpAnim(timeBonus ? \`+\${gainXp} XP \${timeBonus}\` : \`+\${gainXp} XP\`);
+      setXpAnim(timeBonus ? `+${gainXp} XP ${timeBonus}` : `+${gainXp} XP`);
       setTimeout(() => setXpAnim(null), 1600);
     } else {
       setStreak(0);

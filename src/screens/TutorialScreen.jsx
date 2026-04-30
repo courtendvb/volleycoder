@@ -33,7 +33,7 @@ export default function TutorialScreen({ onDone, fromHome }) {
             <div style={{fontFamily:"monospace",fontSize:28,fontWeight:700,
               color:C.cyan,letterSpacing:3,padding:"12px 24px",
               background:"rgba(0,212,255,0.08)",borderRadius:12,
-              border:\`1px solid rgba(0,212,255,0.2)\`}}>
+              border:`1px solid rgba(0,212,255,0.2)`}}>
               {s.example}
             </div>
             {s.note && <div style={{fontSize:11,color:C.muted}}>{s.note}</div>}
@@ -57,13 +57,13 @@ export default function TutorialScreen({ onDone, fromHome }) {
       {/* buttons */}
       <div style={{display:"flex",gap:10,paddingBottom:8}}>
         <button onClick={onDone}
-          style={{flex:1,padding:"10px 0",borderRadius:20,border:\`1px solid \${C.border}\`,
+          style={{flex:1,padding:"10px 0",borderRadius:20,border:`1px solid ${C.border}`,
             background:"transparent",color:C.muted,fontSize:12,fontFamily:"monospace",cursor:"pointer"}}>
           {fromHome ? "閉じる" : "スキップ"}
         </button>
         <button onClick={() => isLast ? onDone() : setSlide(s => s + 1)}
           style={{flex:2,padding:"10px 0",borderRadius:20,border:"none",
-            background: isLast ? C.orange : \`rgba(255,107,53,0.18)\`,
+            background: isLast ? C.orange : `rgba(255,107,53,0.18)`,
             color: isLast ? "#fff" : C.orange,
             fontSize:13,fontFamily:"monospace",fontWeight:700,cursor:"pointer",letterSpacing:1}}>
           {isLast ? "はじめる！" : "つぎへ →"}

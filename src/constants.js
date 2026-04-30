@@ -142,7 +142,7 @@ export const RANKS = [
 
 export const LEVEL_UNLOCK_XP = { 1: 0, 2: 150, 3: 400, 4: 900, 5: 1800 };
 
-export const GLOBAL_CSS = \`
+export const GLOBAL_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
   ::-webkit-scrollbar{width:3px}
@@ -158,4 +158,4 @@ export const GLOBAL_CSS = \`
   @keyframes unlockPop{0%{opacity:0;transform:translateX(-50%) scale(0.7)}60%{transform:translateX(-50%) scale(1.08)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
   @keyframes timerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
   button:active{opacity:0.7!important;transform:scale(0.95)!important}
-\`;
+`;

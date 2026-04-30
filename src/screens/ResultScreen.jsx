@@ -5,12 +5,12 @@ export default function ResultScreen({ result, q, streak, onNext, onHome }) {
   const ex = q.compound && result.correct ? expandCompound(result.codeStr) : null;
 
   return (
-    <div style={{flex:1,overflowY:"auto",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 20px",textAlign:"center",gap:12,borderTop:\`3px solid \${result.correct?C.green:C.red}\`,background:result.correct?"rgba(0,255,136,0.03)":"rgba(255,51,68,0.03)"}}>
+    <div style={{flex:1,overflowY:"auto",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 20px",textAlign:"center",gap:12,borderTop:`3px solid ${result.correct?C.green:C.red}`,background:result.correct?"rgba(0,255,136,0.03)":"rgba(255,51,68,0.03)"}}>
       <div style={{fontSize:58,animation:"pop 0.4s ease"}}>{result.correct ? "🎯" : result.timeout ? "⏰" : "🔕"}</div>
       <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:38,letterSpacing:4,color:result.correct?C.green:C.red}}>{result.correct ? "SPIKE!!" : result.timeout ? "TIMEOUT!" : "OUT!"}</div>
 
       {result.timeout && (
-        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,51,68,0.1)",border:\`1px solid \${C.red}\`,borderRadius:20,padding:"4px 16px",fontSize:12,color:C.red,fontFamily:"monospace",letterSpacing:1}}>
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,51,68,0.1)",border:`1px solid ${C.red}`,borderRadius:20,padding:"4px 16px",fontSize:12,color:C.red,fontFamily:"monospace",letterSpacing:1}}>
           ⏱ 入力遅延ミス — 10秒超過
         </div>
       )}
@@ -28,7 +28,7 @@ export default function ResultScreen({ result, q, streak, onNext, onHome }) {
       </div>
 
       {ex && (
-        <div style={{width:"100%",maxWidth:300,background:C.surface2,borderRadius:8,padding:"10px 14px",border:\`1px solid rgba(0,212,255,0.2)\`}}>
+        <div style={{width:"100%",maxWidth:300,background:C.surface2,borderRadius:8,padding:"10px 14px",border:`1px solid rgba(0,212,255,0.2)`}}>
           <div style={{fontSize:10,color:C.cyan,fontFamily:"monospace",letterSpacing:2,marginBottom:8}}>▶ 出力される2コード</div>
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
             {[{label:"CODE 1",code:ex.code1,color:C.orange,bg:"rgba(255,107,53,0.1)",desc:"サーブ/アタック側"},
@@ -49,23 +49,23 @@ export default function ResultScreen({ result, q, streak, onNext, onHome }) {
         </div>
       )}
 
-      <div style={{fontSize:13,color:"rgba(220,235,255,0.75)",lineHeight:1.85,maxWidth:300,background:C.surface2,padding:"12px 14px",borderRadius:8,border:\`1px solid \${C.border}\`,textAlign:"left"}}>{q.explanation}</div>
+      <div style={{fontSize:13,color:"rgba(220,235,255,0.75)",lineHeight:1.85,maxWidth:300,background:C.surface2,padding:"12px 14px",borderRadius:8,border:`1px solid ${C.border}`,textAlign:"left"}}>{q.explanation}</div>
 
       {result.correct && result.timeBonus && (
-        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(0,212,255,0.1)",border:\`1px solid \${C.cyan}\`,borderRadius:20,padding:"4px 16px",fontSize:13,color:C.cyan,fontFamily:"monospace",letterSpacing:1}}>
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(0,212,255,0.1)",border:`1px solid ${C.cyan}`,borderRadius:20,padding:"4px 16px",fontSize:13,color:C.cyan,fontFamily:"monospace",letterSpacing:1}}>
           ⚡ タイムボーナス {result.timeBonus}
         </div>
       )}
       {result.correct && (
-        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,107,53,0.12)",border:\`1px solid \${C.orange}\`,borderRadius:20,padding:"4px 16px",fontSize:13,color:C.orange,fontFamily:"monospace"}}>
-          ⚡ +\${result.gainXp} XP {streak >= 3 ? "🔥 STREAK!" : ""}
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,107,53,0.12)",border:`1px solid ${C.orange}`,borderRadius:20,padding:"4px 16px",fontSize:13,color:C.orange,fontFamily:"monospace"}}>
+          ⚡ +${result.gainXp} XP {streak >= 3 ? "🔥 STREAK!" : ""}
         </div>
       )}
 
-      <span style={{padding:"3px 10px",borderRadius:20,border:\`1px solid \${SKILL_COLOR[q.skill]}\`,color:SKILL_COLOR[q.skill],fontSize:10,fontFamily:"monospace",letterSpacing:2}}>{q.skill} — {SKILL_LABEL[q.skill]}</span>
+      <span style={{padding:"3px 10px",borderRadius:20,border:`1px solid ${SKILL_COLOR[q.skill]}`,color:SKILL_COLOR[q.skill],fontSize:10,fontFamily:"monospace",letterSpacing:2}}>{q.skill} — {SKILL_LABEL[q.skill]}</span>
 
       <div style={{display:"flex",gap:10,width:"100%",maxWidth:290}}>
-        <button onClick={onNext} style={{flex:2,padding:"12px",background:\`linear-gradient(135deg,\${C.orange},#e65100)\`,border:"none",borderRadius:10,color:"white",fontWeight:700,fontSize:14,letterSpacing:2,cursor:"pointer",fontFamily:"'Noto Sans JP',sans-serif"}}>次へ →</button>
+        <button onClick={onNext} style={{flex:2,padding:"12px",background:`linear-gradient(135deg,${C.orange},#e65100)`,border:"none",borderRadius:10,color:"white",fontWeight:700,fontSize:14,letterSpacing:2,cursor:"pointer",fontFamily:"'Noto Sans JP',sans-serif"}}>次へ →</button>
       </div>
       <button onClick={onHome} style={{background:"transparent",border:"none",color:"rgba(220,235,255,0.25)",cursor:"pointer",fontSize:11,fontFamily:"monospace",letterSpacing:1}}>ホームに戻る</button>
     </div>

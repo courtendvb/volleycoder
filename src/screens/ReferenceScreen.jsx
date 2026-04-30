@@ -20,19 +20,19 @@ export default function ReferenceScreen({ onBack }) {
 
   return (
     <>
-      <div style={{background:C.surface,padding:"14px 16px",borderBottom:\`1px solid \${C.border}\`,display:"flex",alignItems:"center",gap:10,flexShrink:0}}>
+      <div style={{background:C.surface,padding:"14px 16px",borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",gap:10,flexShrink:0}}>
         <button onClick={onBack} style={{background:"transparent",border:"none",color:C.muted,cursor:"pointer",fontSize:20}}>←</button>
         <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3}}>CODE REFERENCE</span>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:"14px"}}>
-        <div style={{fontFamily:"monospace",fontSize:12,color:C.muted,marginBottom:10,lineHeight:1.9,background:C.surface2,padding:"10px 12px",borderRadius:8,border:\`1px solid \${C.border}\`}}>
+        <div style={{fontFamily:"monospace",fontSize:12,color:C.muted,marginBottom:10,lineHeight:1.9,background:C.surface2,padding:"10px 12px",borderRadius:8,border:`1px solid ${C.border}`}}>
           基本形：<span style={{color:C.cyan}}>背番号</span><span style={{color:C.orange}}>スキル</span><span style={{color:C.yellow}}>詳細/ゾーン</span><span style={{color:C.green}}>評価</span><br/>
           相手チーム: 先頭に <span style={{color:C.purple,fontWeight:700}}>a</span>　例: <span style={{color:C.cyan}}>a7SM1</span>
         </div>
 
         {/* コンパウンドコード */}
-        <div style={{marginBottom:10,background:C.surface2,borderRadius:8,overflow:"hidden",border:\`1px solid rgba(0,212,255,0.3)\`}}>
-          <div style={{padding:"7px 12px",background:"rgba(0,212,255,0.1)",borderBottom:\`1px solid rgba(0,212,255,0.2)\`,display:"flex",gap:8,alignItems:"center"}}>
+        <div style={{marginBottom:10,background:C.surface2,borderRadius:8,overflow:"hidden",border:`1px solid rgba(0,212,255,0.3)`}}>
+          <div style={{padding:"7px 12px",background:"rgba(0,212,255,0.1)",borderBottom:`1px solid rgba(0,212,255,0.2)`,display:"flex",gap:8,alignItems:"center"}}>
             <span style={{fontFamily:"monospace",fontSize:13,fontWeight:700,color:C.cyan}}>.</span>
             <span style={{fontSize:12}}>コンパウンドコード</span>
             <span style={{fontSize:10,color:C.cyan,fontFamily:"monospace",letterSpacing:1,marginLeft:"auto"}}>1入力→2出力</span>
@@ -52,8 +52,8 @@ export default function ReferenceScreen({ onBack }) {
 
         {/* スキル別一覧 */}
         {skillRows.map(({k,rows}) => (
-          <div key={k} style={{marginBottom:10,background:C.surface2,borderRadius:8,overflow:"hidden",border:\`1px solid \${C.border}\`}}>
-            <div style={{padding:"7px 12px",background:"rgba(0,212,255,0.06)",borderBottom:\`1px solid \${C.border}\`,display:"flex",gap:8,alignItems:"center"}}>
+          <div key={k} style={{marginBottom:10,background:C.surface2,borderRadius:8,overflow:"hidden",border:`1px solid ${C.border}`}}>
+            <div style={{padding:"7px 12px",background:"rgba(0,212,255,0.06)",borderBottom:`1px solid ${C.border}`,display:"flex",gap:8,alignItems:"center"}}>
               <span style={{fontFamily:"monospace",fontSize:13,fontWeight:700,color:SKILL_COLOR[k]}}>{k}</span>
               <span style={{fontSize:12}}>{SKILL_LABEL[k]}</span>
             </div>
@@ -68,7 +68,7 @@ export default function ReferenceScreen({ onBack }) {
           </div>
         ))}
 
-        <button onClick={onBack} style={{width:"100%",padding:"12px",background:\`linear-gradient(135deg,\${C.orange},#e65100)\`,border:"none",borderRadius:10,color:"white",fontWeight:700,fontSize:14,letterSpacing:2,cursor:"pointer",fontFamily:"'Noto Sans JP',sans-serif"}}>← ホームに戻る</button>
+        <button onClick={onBack} style={{width:"100%",padding:"12px",background:`linear-gradient(135deg,${C.orange},#e65100)`,border:"none",borderRadius:10,color:"white",fontWeight:700,fontSize:14,letterSpacing:2,cursor:"pointer",fontFamily:"'Noto Sans JP',sans-serif"}}>← ホームに戻る</button>
       </div>
     </>
   );
