@@ -130,7 +130,7 @@ export const SUB = {
 };
 
 export const ROUND_SIZE = 7;
-export const TIME_LIMIT = 10;
+export const TIME_LIMIT = 20;
 
 export const RANKS = [
   {level:1,name:"見習い",icon:"📋",xpReq:0},
