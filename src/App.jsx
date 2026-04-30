@@ -72,7 +72,8 @@ export default function VolleyCoder() {
   }, [stats]);
 
   const safeLevelFilter  = Math.min(levelFilter, maxUnlockedLevel);
-  const qs       = QUESTIONS.filter(q => q.level <= safeLevelFilter);
+  const minLevel = safeLevelFilter >= 4 ? 3 : 1;
+  const qs       = QUESTIONS.filter(q => q.level >= minLevel && q.level <= safeLevelFilter);
   const q        = qOrder.length > 0 ? qs[qOrder[qIndex % qOrder.length]] : qs[0];
   const rank     = getRank(xp);
   const nextRank = getNextRank(xp);
