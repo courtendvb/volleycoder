@@ -95,7 +95,7 @@ export default function VolleyCoder() {
       setAnimKey(k => k + 1);
       setRq(randomizeQuestion(q));
       if (qOrder.length > 0 && qIndex > 0 && qIndex % qOrder.length === 0) {
-        setQOrder(shuffleIndices(qs.length));
+        setQOrder(buildDeck(qs));
       }
       // アニメーション完了後にタイマースタート（800ms遅延）
       if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
@@ -170,8 +170,7 @@ export default function VolleyCoder() {
     setScreen("game");
   }, []);
 
-  const shuffleIndices = (len) => {
-    const arr = Array.from({length: len}, (_, i) => i);
+  const shuffle = (arr) => {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -179,8 +178,19 @@ export default function VolleyCoder() {
     return arr;
   };
 
+  // レベルが高いほど出題頻度が高くなる重み付きデッキを生成
+  const WEIGHTS = { 1: 1, 2: 2, 3: 3, 4: 7, 5: 10 };
+  const buildDeck = (questions) => {
+    const pool = [];
+    questions.forEach((q, i) => {
+      const w = WEIGHTS[q.level] ?? 1;
+      for (let j = 0; j < w; j++) pool.push(i);
+    });
+    return shuffle(pool);
+  };
+
   const handleStart = useCallback(() => {
-    const order = shuffleIndices(qs.length);
+    const order = buildDeck(qs);
     setQOrder(order);
     setQIndex(0); setScore(0); setStreak(0);
     setInput(""); setResult(null); setRq(null);
