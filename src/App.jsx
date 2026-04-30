@@ -225,6 +225,7 @@ export default function VolleyCoder() {
   if (screen === "prog") return shell(
     <ProgressScreen
       stats={stats} xp={xp} rank={rank} xpPct={xpPct} nextRank={nextRank}
+      maxStreak={maxStreak}
       onBack={() => setScreen("home")}
     />
   );
