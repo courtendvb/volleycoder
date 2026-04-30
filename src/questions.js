@@ -103,7 +103,7 @@ const QUESTIONS_RAW = [
    players:{A:6},
    scene:{
      desc:"相手のスパイクを{A}番がディグできなかった。",
-     ball:[{fx:230,fy:98,tx:180,ty:175}],
+     ball:[{fx:230,fy:98,tx:180,ty:175},{fx:180,fy:175,tx:120,ty:222}],
      actors:[{n:"A",side:"home",x:180,y:175},{n:9,side:"away",x:230,y:96,jump:true}],
      hlHome:[],hlAway:[],result:"bad",
    },
@@ -125,7 +125,7 @@ const QUESTIONS_RAW = [
    players:{A:5},
    scene:{
      desc:"{A}番がレセプションをミスした。",
-     ball:[{fx:150,fy:15,tx:70,ty:195}],
+     ball:[{fx:150,fy:15,tx:70,ty:195},{fx:70,fy:195,tx:25,ty:225}],
      actors:[{n:"A",side:"home",x:70,y:193}],
      hlHome:[5],hlAway:[6],result:"miss",
    },
@@ -147,7 +147,7 @@ const QUESTIONS_RAW = [
    players:{A:5},
    scene:{
      desc:"{A}番がスパイクを打ったが相手にブロックをされた。",
-     ball:[{fx:70,fy:128,tx:150,ty:115,spike:true},{fx:150,fy:115,tx:70,ty:185}],
+     ball:[{fx:70,fy:128,tx:150,ty:115,spike:true},{fx:150,fy:115,tx:288,ty:85}],
      actors:[{n:"A",side:"home",x:70,y:126,jump:true},{n:7,side:"away",x:150,y:96,jump:true}],
      hlHome:[4],hlAway:[],result:"bad",
    },
@@ -354,7 +354,7 @@ const QUESTIONS_RAW = [
    players:{A:5,B:8},
    scene:{
      desc:"{A}番がスパイクを打ち、相手{B}番がブロック決定した。コンパウンドコードで入力せよ。",
-     ball:[{fx:70,fy:128,tx:150,ty:66,spike:true},{fx:150,fy:66,tx:150,ty:130}],
+     ball:[{fx:70,fy:128,tx:150,ty:66,spike:true},{fx:150,fy:66,tx:110,ty:185}],
      actors:[{n:"A",side:"home",x:70,y:126,jump:true},{n:"B",side:"away",x:150,y:66,jump:true}],
      hlHome:[4],hlAway:[8],result:"ace",
    },
@@ -378,7 +378,7 @@ const QUESTIONS_RAW = [
    players:{A:7,B:3},
    scene:{
      desc:"{A}番がAクイック（PA）ゾーン1方向に打ったが、相手{B}番にブロックされた。",
-     ball:[{fx:150,fy:130,tx:70,ty:98,spike:true},{fx:70,fy:98,tx:70,ty:130}],
+     ball:[{fx:150,fy:130,tx:70,ty:98,spike:true},{fx:70,fy:98,tx:100,ty:185}],
      actors:[{n:"A",side:"home",x:150,y:130,jump:true},{n:"B",side:"away",x:70,y:96,jump:true}],
      hlHome:[3],hlAway:[1],result:"ace",
    },
@@ -474,7 +474,7 @@ const QUESTIONS_RAW = [
    players:{A:8,B:4},
    scene:{
      desc:"{A}番がスパイクを打ち、相手{B}番がブロックミスして得点。コンパウンドコードで入力せよ。",
-     ball:[{fx:70,fy:128,tx:150,ty:66,spike:true}],
+     ball:[{fx:70,fy:128,tx:150,ty:66,spike:true},{fx:150,fy:66,tx:285,ty:25}],
      actors:[{n:"A",side:"home",x:70,y:126,jump:true},{n:"B",side:"away",x:150,y:66,jump:true}],
      hlHome:[4],hlAway:[8],result:"ace",
    },
@@ -486,7 +486,7 @@ const QUESTIONS_RAW = [
    players:{A:11,B:8},
    scene:{
      desc:"相手{A}番がスパイク、自チーム{B}番がディグしたが、スパイク得点になった。コンパウンドコードで入力せよ。",
-     ball:[{fx:230,fy:66,tx:150,ty:162},{fx:150,fy:162,tx:150,ty:200}],
+     ball:[{fx:230,fy:66,tx:150,ty:162},{fx:150,fy:162,tx:90,ty:222}],
      actors:[{n:"A",side:"away",x:230,y:64,jump:true},{n:"B",side:"home",x:150,y:162}],
      hlHome:[],hlAway:[],result:"bad",
    },
@@ -637,7 +637,7 @@ const QUESTIONS_RAW = [
    players:{A:1,B:3,C:4,D:6},
    scene:{
      desc:"{A}番がゾーン1から相手ゾーン6にジャンピングサーブ。相手{B}番がパーフェクトレセプション。続いて相手{C}番がゾーン7にレフト平行を打ち、味方{D}番がブロックミス。2コードをスペースで区切って入力せよ。",
-     ball:[{fx:245,fy:220,tx:150,ty:60},{fx:70,fy:96,tx:230,ty:185}],
+     ball:[{fx:245,fy:220,tx:150,ty:60},{fx:150,fy:60,tx:150,ty:85}],
      actors:[{n:"A",side:"home",x:245,y:218,jump:true},{n:"B",side:"away",x:150,y:58},{n:"C",side:"away",x:70,y:94,jump:true},{n:"D",side:"home",x:200,y:130,jump:true}],
      hlHome:[3],hlAway:[6,8],result:"bad",
    },
@@ -649,7 +649,7 @@ const QUESTIONS_RAW = [
    players:{A:5,B:2,C:7,D:9},
    scene:{
      desc:"{A}番がゾーン5から相手ゾーン1にジャンプフローターサーブ。相手{B}番のレセプション評価はー。続いて相手{C}番がゾーン4にライト平行を打ち、味方{D}番がブロックアウト。2コードをスペースで区切って入力せよ。",
-     ball:[{fx:55,fy:220,tx:245,ty:60,curve:true},{fx:230,fy:96,tx:70,ty:185}],
+     ball:[{fx:55,fy:220,tx:245,ty:60,curve:true},{fx:245,fy:60,tx:150,ty:85}],
      actors:[{n:"A",side:"home",x:55,y:218,jump:true},{n:"B",side:"away",x:245,y:58},{n:"C",side:"away",x:230,y:94,jump:true},{n:"D",side:"home",x:70,y:130,jump:true}],
      hlHome:[1,5],hlAway:[5,7],result:"bad",
    },
@@ -661,7 +661,7 @@ const QUESTIONS_RAW = [
    players:{A:2,B:8,C:6,D:4},
    scene:{
      desc:"{A}番がゾーン6から相手ゾーン5にジャンプフローターサーブ。相手{B}番のレセプション評価は！。続いて相手{C}番がゾーン8にAクイックを打ち、味方{D}番がブロック決定。2コードをスペースで区切って入力せよ。",
-     ball:[{fx:150,fy:220,tx:55,ty:60,curve:true},{fx:150,fy:96,tx:150,ty:185}],
+     ball:[{fx:150,fy:220,tx:55,ty:60,curve:true},{fx:55,fy:60,tx:150,ty:85}],
      actors:[{n:"A",side:"home",x:150,y:218,jump:true},{n:"B",side:"away",x:55,y:58},{n:"C",side:"away",x:150,y:94,jump:true},{n:"D",side:"home",x:150,y:130,jump:true}],
      hlHome:[2,5],hlAway:[6,8],result:"ace",
    },
@@ -673,7 +673,7 @@ const QUESTIONS_RAW = [
    players:{A:9,B:2,C:5,D:8},
    scene:{
      desc:"相手{A}番がゾーン5から自ゾーン6にジャンピングサーブ。自チーム{B}番がパーフェクトレセプション。続いて{C}番がゾーン7にレフト平行を打ち、相手{D}番がブロック決定。2コードをスペースで区切って入力せよ。",
-     ball:[{fx:55,fy:15,tx:150,ty:195},{fx:70,fy:128,tx:230,ty:66,spike:true}],
+     ball:[{fx:55,fy:15,tx:150,ty:195},{fx:150,fy:195,tx:150,ty:162}],
      actors:[{n:"A",side:"away",x:55,y:18,jump:true},{n:"B",side:"home",x:150,y:193},{n:"C",side:"home",x:70,y:126,jump:true},{n:"D",side:"away",x:150,y:66,jump:true}],
      hlHome:[5,4],hlAway:[7],result:"bad",
    },
@@ -685,7 +685,7 @@ const QUESTIONS_RAW = [
    players:{A:7,B:4,C:11,D:3},
    scene:{
      desc:"相手{A}番がゾーン1から自ゾーン5にジャンプフローターサーブ。自チーム{B}番のレセプション評価は+。続いて{C}番がゾーン5にAクイックを打ち、相手{D}番が優れたディグで返した。2コードをスペースで区切って入力せよ。",
-     ball:[{fx:245,fy:15,tx:55,ty:195},{fx:150,fy:128,tx:55,ty:66,spike:true}],
+     ball:[{fx:245,fy:15,tx:55,ty:195},{fx:55,fy:195,tx:150,ty:162}],
      actors:[{n:"A",side:"away",x:245,y:18,jump:true},{n:"B",side:"home",x:55,y:193},{n:"C",side:"home",x:150,y:126,jump:true},{n:"D",side:"away",x:55,y:66}],
      hlHome:[5,3],hlAway:[],result:"good",
    },
@@ -697,7 +697,7 @@ const QUESTIONS_RAW = [
    players:{A:3,B:6,C:9,D:2},
    scene:{
      desc:"{A}番がゾーン6から相手ゾーン1にジャンピングサーブ。相手{B}番がパーフェクトレセプション。続いて相手{C}番がゾーン7にライト平行を打ち、味方{D}番がブロックミス。2コードをスペースで区切って入力せよ。",
-     ball:[{fx:150,fy:220,tx:245,ty:60},{fx:230,fy:96,tx:70,ty:185}],
+     ball:[{fx:150,fy:220,tx:245,ty:60},{fx:245,fy:60,tx:150,ty:85}],
      actors:[{n:"A",side:"home",x:150,y:218,jump:true},{n:"B",side:"away",x:245,y:58},{n:"C",side:"away",x:230,y:94,jump:true},{n:"D",side:"home",x:70,y:130,jump:true}],
      hlHome:[],hlAway:[8,2],result:"bad",
    },
@@ -709,7 +709,7 @@ const QUESTIONS_RAW = [
    players:{A:8,B:3,C:5,D:11},
    scene:{
      desc:"相手{A}番がゾーン6から自ゾーン8にジャンプフローターサーブ。自チーム{B}番のレセプション評価はー。続いて{C}番がゾーン4にレフト平行を打ち、相手{D}番がディグでつないだ。2コードをスペースで区切って入力せよ。",
-     ball:[{fx:150,fy:15,tx:150,ty:195},{fx:70,fy:128,tx:70,ty:66,spike:true}],
+     ball:[{fx:150,fy:15,tx:150,ty:195},{fx:150,fy:195,tx:150,ty:162}],
      actors:[{n:"A",side:"away",x:150,y:18,jump:true},{n:"B",side:"home",x:150,y:193},{n:"C",side:"home",x:70,y:126,jump:true},{n:"D",side:"away",x:70,y:66}],
      hlHome:[1,4],hlAway:[],result:"good",
    },
@@ -721,7 +721,7 @@ const QUESTIONS_RAW = [
    players:{A:7,B:2,C:6,D:1},
    scene:{
      desc:"相手{A}番がゾーン5から自ゾーン6にジャンプフローターサーブ。自チーム{B}番のレセプション評価は+。続いて{C}番がゾーン1にAクイックを打ち、相手{D}番がブロック決定。2コードをスペースで区切って入力せよ。",
-     ball:[{fx:55,fy:15,tx:150,ty:195},{fx:150,fy:130,tx:245,ty:66,spike:true}],
+     ball:[{fx:55,fy:15,tx:150,ty:195},{fx:150,fy:195,tx:150,ty:162}],
      actors:[{n:"A",side:"away",x:55,y:18,jump:true},{n:"B",side:"home",x:150,y:193},{n:"C",side:"home",x:150,y:128,jump:true},{n:"D",side:"away",x:245,y:66,jump:true}],
      hlHome:[4],hlAway:[8,3],result:"bad",
    },
