@@ -30,6 +30,24 @@ export default function ReferenceScreen({ onBack }) {
           相手チーム: 先頭に <span style={{color:C.purple,fontWeight:700}}>a</span>　例: <span style={{color:C.cyan}}>a7SM1</span>
         </div>
 
+        {/* スキル別一覧 */}
+        {skillRows.map(({k,rows}) => (
+          <div key={k} style={{marginBottom:10,background:C.surface2,borderRadius:8,overflow:"hidden",border:`1px solid ${C.border}`}}>
+            <div style={{padding:"7px 12px",background:"rgba(0,212,255,0.06)",borderBottom:`1px solid ${C.border}`,display:"flex",gap:8,alignItems:"center"}}>
+              <span style={{fontFamily:"monospace",fontSize:13,fontWeight:700,color:SKILL_COLOR[k]}}>{k}</span>
+              <span style={{fontSize:12}}>{SKILL_LABEL[k]}</span>
+            </div>
+            <div style={{padding:"8px 12px",display:"flex",flexDirection:"column",gap:5}}>
+              {rows.map(([code,desc]) => (
+                <div key={code} style={{display:"flex",alignItems:"center",gap:10}}>
+                  <span style={{fontFamily:"monospace",fontSize:12,color:C.yellow,background:"rgba(255,214,10,0.1)",padding:"2px 8px",borderRadius:4,minWidth:44,textAlign:"center"}}>{code}</span>
+                  <span style={{fontSize:11,color:C.muted}}>{desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
         {/* コンパウンドコード */}
         <div style={{marginBottom:10,background:C.surface2,borderRadius:8,overflow:"hidden",border:`1px solid rgba(0,212,255,0.3)`}}>
           <div style={{padding:"7px 12px",background:"rgba(0,212,255,0.1)",borderBottom:`1px solid rgba(0,212,255,0.2)`,display:"flex",gap:8,alignItems:"center"}}>
@@ -49,24 +67,6 @@ export default function ReferenceScreen({ onBack }) {
             ))}
           </div>
         </div>
-
-        {/* スキル別一覧 */}
-        {skillRows.map(({k,rows}) => (
-          <div key={k} style={{marginBottom:10,background:C.surface2,borderRadius:8,overflow:"hidden",border:`1px solid ${C.border}`}}>
-            <div style={{padding:"7px 12px",background:"rgba(0,212,255,0.06)",borderBottom:`1px solid ${C.border}`,display:"flex",gap:8,alignItems:"center"}}>
-              <span style={{fontFamily:"monospace",fontSize:13,fontWeight:700,color:SKILL_COLOR[k]}}>{k}</span>
-              <span style={{fontSize:12}}>{SKILL_LABEL[k]}</span>
-            </div>
-            <div style={{padding:"8px 12px",display:"flex",flexDirection:"column",gap:5}}>
-              {rows.map(([code,desc]) => (
-                <div key={code} style={{display:"flex",alignItems:"center",gap:10}}>
-                  <span style={{fontFamily:"monospace",fontSize:12,color:C.yellow,background:"rgba(255,214,10,0.1)",padding:"2px 8px",borderRadius:4,minWidth:44,textAlign:"center"}}>{code}</span>
-                  <span style={{fontSize:11,color:C.muted}}>{desc}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
 
         <button onClick={onBack} style={{width:"100%",padding:"12px",background:`linear-gradient(135deg,${C.orange},#e65100)`,border:"none",borderRadius:10,color:"white",fontWeight:700,fontSize:14,letterSpacing:2,cursor:"pointer",fontFamily:"'Noto Sans JP',sans-serif"}}>← ホームに戻る</button>
       </div>
