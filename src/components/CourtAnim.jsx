@@ -1,26 +1,48 @@
 import { useState, useEffect } from "react";
 import { C, HOME_ZONES, AWAY_ZONES, ZW, ZH, SUB } from "../constants.js";
 
+function buildMotionProps(balls) {
+  const b0 = balls[0];
+  const b1 = balls[1];
+  if (!b0) return null;
+  if (b1) {
+    const d0 = Math.hypot(b0.tx - b0.fx, b0.ty - b0.fy);
+    const d1 = Math.hypot(b1.tx - b1.fx, b1.ty - b1.fy);
+    const total = d0 + d1;
+    const f0 = total > 0 ? (d0 / total).toFixed(4) : "0.5000";
+    const seg0Dur = 0.68, seg1Dur = 0.60, totalDur = seg0Dur + seg1Dur;
+    return {
+      path: `M ${b0.fx},${b0.fy} L ${b0.tx},${b0.ty} L ${b1.tx},${b1.ty}`,
+      dur: `${totalDur}s`,
+      keyTimes: `0;${(seg0Dur / totalDur).toFixed(4)};1`,
+      keyPoints: `0;${f0};1`,
+      keySplines: "0.25 0.46 0.45 0.94;0.55 0.06 0.68 0.19",
+    };
+  }
+  return {
+    path: `M ${b0.fx},${b0.fy} L ${b0.tx},${b0.ty}`,
+    dur: "0.68s",
+    keyTimes: "0;1",
+    keyPoints: "0;1",
+    keySplines: "0.25 0.46 0.45 0.94",
+  };
+}
+
 export default function CourtAnim({ scene, animKey, showSub = false }) {
-  const [phase,   setPhase]   = useState(0);
-  const [ballSeg, setBallSeg] = useState(0);
+  const [phase, setPhase] = useState(0);
   const balls = scene.ball || [];
 
   useEffect(() => {
-    setPhase(0); setBallSeg(0);
+    setPhase(0);
     const t1 = setTimeout(() => setPhase(1), 150);
     const t2 = setTimeout(() => setPhase(2), 820);
-    const t3 = setTimeout(() => { if (balls[1]) { setBallSeg(1); setPhase(3); } }, 1400);
-    const t4 = setTimeout(() => { if (balls[1]) setPhase(4); }, 2000);
-    return () => [t1,t2,t3,t4].forEach(clearTimeout);
-  }, [animKey, balls]);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [animKey]);
 
-  const seg  = (ballSeg === 0 || !balls[1]) ? balls[0] : balls[1];
-  const prog = ballSeg === 0 ? phase : phase - 3;
-  const bx   = (prog >= 1 && seg) ? seg.tx : (seg?.fx ?? 150);
-  const by   = (prog >= 1 && seg) ? seg.ty : (seg?.fy ?? 115);
-  const hlH  = scene.hlHome || [];
-  const hlA  = scene.hlAway || [];
+  const motionProps = buildMotionProps(balls);
+  const hasNet = balls.some(b => b?.net);
+  const hlH = scene.hlHome || [];
+  const hlA = scene.hlAway || [];
 
   const ZoneBlock = ({ z, cx, cy, isHL }) => (
     <g>
@@ -128,10 +150,10 @@ export default function CourtAnim({ scene, animKey, showSub = false }) {
 
         {/* ゾーン */}
         {Object.entries(HOME_ZONES).map(([z,{x,y}]) => (
-          <ZoneBlock key={\`h\${z}\`} z={z} cx={x} cy={y} isHL={hlH.includes(Number(z))}/>
+          <ZoneBlock key={`h${z}`} z={z} cx={x} cy={y} isHL={hlH.includes(Number(z))}/>
         ))}
         {Object.entries(AWAY_ZONES).map(([z,{x,y}]) => (
-          <ZoneBlock key={\`a\${z}\`} z={z} cx={x} cy={y} isHL={hlA.includes(Number(z))}/>
+          <ZoneBlock key={`a${z}`} z={z} cx={x} cy={y} isHL={hlA.includes(Number(z))}/>
         ))}
 
         {/* コート外サーブライン参考 */}
@@ -159,7 +181,7 @@ export default function CourtAnim({ scene, animKey, showSub = false }) {
         })}
 
         {/* ネット当たり */}
-        {seg?.net && phase >= 2 && (
+        {hasNet && phase >= 2 && (
           <g>
             <line x1="138" y1="108" x2="162" y2="122"
               stroke={C.red} strokeWidth="2.2" strokeDasharray="4,3" opacity="0.9"/>
@@ -167,12 +189,20 @@ export default function CourtAnim({ scene, animKey, showSub = false }) {
           </g>
         )}
 
-        {/* ボール */}
-        {phase > 0 && (
-          <g style={{
-            transform:\`translate(\${bx}px,\${by}px)\`,
-            transition: prog >= 1 ? "transform 0.68s cubic-bezier(0.25,0.46,0.45,0.94)" : "none",
-          }}>
+        {/* ボール — <animateMotion> で連続パスアニメーション */}
+        {motionProps && (
+          <g key={`ball_${animKey}`} visibility="hidden">
+            <set attributeName="visibility" to="visible" begin="0.15s" fill="freeze"/>
+            <animateMotion
+              begin="0.15s"
+              dur={motionProps.dur}
+              fill="freeze"
+              calcMode="spline"
+              keyTimes={motionProps.keyTimes}
+              keyPoints={motionProps.keyPoints}
+              keySplines={motionProps.keySplines}
+              path={motionProps.path}
+            />
             <circle cx="0" cy="0" r="9" fill="rgba(255,200,40,0.2)" filter="url(#bglow)"/>
             <text x="0" y="6" textAnchor="middle" fontSize="14">🏐</text>
           </g>
@@ -190,7 +220,7 @@ export default function CourtAnim({ scene, animKey, showSub = false }) {
             padding:"2px 10px",borderRadius:20,
             fontSize:10,fontFamily:"monospace",letterSpacing:1,
             background: scene.result==="ace" ? "rgba(0,255,136,0.2)" : scene.result==="miss" ? "rgba(255,51,68,0.2)" : "rgba(255,214,10,0.2)",
-            border:\`1px solid \${scene.result==="ace" ? C.green : scene.result==="miss" ? C.red : C.yellow}\`,
+            border:`1px solid ${scene.result==="ace" ? C.green : scene.result==="miss" ? C.red : C.yellow}`,
             color: scene.result==="ace" ? C.green : scene.result==="miss" ? C.red : C.yellow,
           }}>
             {scene.result==="ace" ? "POINT! 🎉" : scene.result==="miss" ? "MISS! ❌" : "GOOD! ⭐"}
