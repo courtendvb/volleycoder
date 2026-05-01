@@ -366,7 +366,7 @@ const QUESTIONS_RAW = [
    scene:{
      desc:"{A}番がスパイクを打ち、相手{B}番がブロック決定した。コンパウンドコードで入力せよ。",
      ball:[{fx:70,fy:128,tx:150,ty:66,spike:true},{fx:150,fy:66,tx:110,ty:185}],
-     actors:[{n:"A",side:"home",x:70,y:126,jump:true},{n:"B",side:"away",x:150,y:66,jump:true}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true},{n:"B",side:"away",x:150,y:98,jump:true}],
      hlHome:[4],hlAway:[8],result:"ace",
    },
    answer:"{A}A.{B}#",variants:["{A}A.{B}#"],
@@ -378,7 +378,7 @@ const QUESTIONS_RAW = [
    scene:{
      desc:"{A}番がスパイクを打ち、相手{B}番がディグでつないだ。コンパウンドコードで入力せよ。",
      ball:[{fx:230,fy:128,tx:150,ty:66,spike:true},{fx:150,fy:66,tx:150,ty:98}],
-     actors:[{n:"A",side:"home",x:230,y:126,jump:true},{n:"B",side:"away",x:70,y:66}],
+     actors:[{n:"A",side:"home",x:230,y:126,jump:true},{n:"B",side:"away",x:150,y:66}],
      hlHome:[2],hlAway:[8],
    },
    answer:"{A}A.{B}D",variants:["{A}A.{B}D","{A}A.{B}D!"],
@@ -486,7 +486,7 @@ const QUESTIONS_RAW = [
    scene:{
      desc:"{A}番がスパイクを打ち、相手{B}番がブロックミスして得点。コンパウンドコードで入力せよ。",
      ball:[{fx:70,fy:128,tx:150,ty:66,spike:true},{fx:150,fy:66,tx:285,ty:25}],
-     actors:[{n:"A",side:"home",x:70,y:126,jump:true},{n:"B",side:"away",x:150,y:66,jump:true}],
+     actors:[{n:"A",side:"home",x:70,y:126,jump:true},{n:"B",side:"away",x:150,y:98,jump:true}],
      hlHome:[4],hlAway:[8],result:"ace",
    },
    answer:"{A}A.{B}=",variants:["{A}A.{B}="],
@@ -718,7 +718,7 @@ const QUESTIONS_RAW = [
    scene:{
      desc:"{A}番がゾーン1から相手ゾーン6にジャンピングサーブ。相手{B}番がパーフェクトレセプション。続いて相手{C}番がゾーン7にレフト平行を打ち、味方{D}番がブロックミス。2コードをスペースで区切って入力せよ。",
      ball:[{fx:245,fy:220,tx:150,ty:60},{fx:150,fy:60,tx:150,ty:98}],
-     actors:[{n:"A",side:"home",x:245,y:218,jump:true},{n:"B",side:"away",x:150,y:58},{n:"C",side:"away",x:70,y:94,jump:true},{n:"D",side:"home",x:200,y:130,jump:true}],
+     actors:[{n:"A",side:"home",x:245,y:218,jump:true},{n:"B",side:"away",x:150,y:58},{n:"C",side:"away",x:70,y:94,jump:true},{n:"D",side:"home",x:70,y:130,jump:true}],
      hlHome:[3],hlAway:[6,8],result:"bad",
    },
    answer:"{A}SQ16.{B}# a{C}PV7.{D}=",variants:["{A}SQ16.{B}# a{C}PV7.{D}="],
@@ -754,7 +754,7 @@ const QUESTIONS_RAW = [
    scene:{
      desc:"相手{A}番がゾーン5から自ゾーン6にジャンピングサーブ。自チーム{B}番がパーフェクトレセプション。続いて{C}番がゾーン7にレフト平行を打ち、相手{D}番がブロック決定。2コードをスペースで区切って入力せよ。",
      ball:[{fx:55,fy:15,tx:150,ty:195},{fx:150,fy:195,tx:150,ty:130}],
-     actors:[{n:"A",side:"away",x:55,y:18,jump:true},{n:"B",side:"home",x:150,y:193},{n:"C",side:"home",x:70,y:126,jump:true},{n:"D",side:"away",x:150,y:66,jump:true}],
+     actors:[{n:"A",side:"away",x:55,y:18,jump:true},{n:"B",side:"home",x:150,y:193},{n:"C",side:"home",x:70,y:126,jump:true},{n:"D",side:"away",x:230,y:98,jump:true}],
      hlHome:[5,4],hlAway:[7],result:"bad",
    },
    answer:"a{A}SQ56.{B}# {C}PV7.{D}#",variants:["a{A}SQ56.{B}# {C}PV7.{D}#"],
@@ -790,7 +790,7 @@ const QUESTIONS_RAW = [
    scene:{
      desc:"相手{A}番がゾーン6から自ゾーン8にジャンプフローターサーブ。自チーム{B}番のレセプション評価はー。続いて{C}番がゾーン4にレフト平行を打ち、相手{D}番がディグでつないだ。2コードをスペースで区切って入力せよ。",
      ball:[{fx:150,fy:15,tx:150,ty:195},{fx:150,fy:195,tx:230,ty:195}],
-     actors:[{n:"A",side:"away",x:150,y:18,jump:true},{n:"B",side:"home",x:150,y:193},{n:"C",side:"home",x:70,y:126,jump:true},{n:"D",side:"away",x:70,y:66}],
+     actors:[{n:"A",side:"away",x:150,y:18,jump:true},{n:"B",side:"home",x:150,y:193},{n:"C",side:"home",x:70,y:126,jump:true},{n:"D",side:"away",x:230,y:98}],
      hlHome:[1,4],hlAway:[],result:"good",
    },
    answer:"a{A}SM68.{B}- {C}PV4.{D}D",variants:["a{A}SM68.{B}- {C}PV4.{D}D"],
@@ -802,7 +802,7 @@ const QUESTIONS_RAW = [
    scene:{
      desc:"相手{A}番がゾーン5から自ゾーン6にジャンプフローターサーブ。自チーム{B}番のレセプション評価は+。続いて{C}番がゾーン1にAクイックを打ち、相手{D}番がブロック決定。2コードをスペースで区切って入力せよ。",
      ball:[{fx:55,fy:15,tx:150,ty:195},{fx:150,fy:195,tx:150,ty:130}],
-     actors:[{n:"A",side:"away",x:55,y:18,jump:true},{n:"B",side:"home",x:150,y:193},{n:"C",side:"home",x:150,y:128,jump:true},{n:"D",side:"away",x:245,y:66,jump:true}],
+     actors:[{n:"A",side:"away",x:55,y:18,jump:true},{n:"B",side:"home",x:150,y:193},{n:"C",side:"home",x:150,y:128,jump:true},{n:"D",side:"away",x:70,y:98,jump:true}],
      hlHome:[4],hlAway:[8,3],result:"bad",
    },
    answer:"a{A}SM56.{B}+ {C}PA1.{D}#",variants:["a{A}SM56.{B}+ {C}PA1.{D}#"],
