@@ -546,9 +546,9 @@ const QUESTIONS_RAW = [
    players:{A:7,B:4},
    scene:{
      desc:"{A}番がゾーン1（右後）から、ゾーン5にジャンプフローターサーブを打って、相手{B}番がパーフェクトレセプション。コンパウンドコードで入力せよ。",
-     ball:[{fx:245,fy:222,tx:55,ty:50,curve:true},{fx:55,fy:50,tx:150,ty:98}],
-     actors:[{n:"A",side:"home",x:245,y:220,jump:true},{n:"B",side:"away",x:55,y:48}],
-     hlHome:[1],hlAway:[1],result:"good",
+     ball:[{fx:245,fy:222,tx:230,ty:34,curve:true},{fx:230,fy:34,tx:150,ty:98}],
+     actors:[{n:"A",side:"home",x:245,y:220,jump:true},{n:"B",side:"away",x:230,y:34}],
+     hlHome:[1],hlAway:[5],result:"good",
    },
    answer:"{A}SM15.{B}#",variants:["{A}SM15.{B}#","{A}SM1.{B}#5"],
    explanation:"{A}SM15.{B}# → CODE1: *{A}SM15（ゾーン1→5 J.フローター）/ CODE2: a{B}RH#（相手{B}番のパーフェクトレセプション）。"},
