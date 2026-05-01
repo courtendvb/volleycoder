@@ -391,7 +391,7 @@ const QUESTIONS_RAW = [
      desc:"{A}番がAクイック（PA）ゾーン1方向に打ったが、相手{B}番にブロックされた。",
      ball:[{fx:150,fy:130,tx:70,ty:98,spike:true},{fx:70,fy:98,tx:100,ty:185}],
      actors:[{n:"A",side:"home",x:150,y:130,jump:true},{n:"B",side:"away",x:70,y:96,jump:true}],
-     hlHome:[3],hlAway:[1],result:"ace",
+     hlHome:[3],hlAway:[2],result:"ace",
    },
    answer:"{A}PA1.{B}#",variants:["{A}PA1.{B}#"],
    explanation:"{A}PA1.{B}# → CODE1: *{A}PA1/（Aクイックがブロックされた）/ CODE2: a{B}BH#（相手{B}番ブロック決定）。"},
