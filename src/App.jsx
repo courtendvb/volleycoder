@@ -100,7 +100,7 @@ export default function VolleyCoder() {
       }
       // アニメーション完了後にタイマースタート（800ms遅延）
       if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
-      setTimeLeft(safeLevelFilter === 5 ? 15 : TIME_LIMIT);
+      setTimeLeft(TIME_LIMIT);
       const startDelay = setTimeout(() => {
         timerStartRef.current = Date.now();
         timerRef.current = setInterval(() => {
