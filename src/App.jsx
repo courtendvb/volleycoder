@@ -10,6 +10,7 @@ import ReferenceScreen from "./screens/ReferenceScreen.jsx";
 import RoundReviewScreen from "./screens/RoundReviewScreen.jsx";
 import ResultScreen from "./screens/ResultScreen.jsx";
 import GameScreen from "./screens/GameScreen.jsx";
+import MasterScreen from "./screens/MasterScreen.jsx";
 
 export default function VolleyCoder() {
   const [screen,      setScreen]      = useState(() =>
@@ -99,7 +100,7 @@ export default function VolleyCoder() {
       }
       // アニメーション完了後にタイマースタート（800ms遅延）
       if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
-      setTimeLeft(TIME_LIMIT);
+      setTimeLeft(safeLevelFilter === 5 ? 15 : TIME_LIMIT);
       const startDelay = setTimeout(() => {
         timerStartRef.current = Date.now();
         timerRef.current = setInterval(() => {
@@ -119,7 +120,7 @@ export default function VolleyCoder() {
         if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
       };
     }
-  }, [screen, qIndex]);
+  }, [screen, qIndex, safeLevelFilter]);
 
   const handleKey = useCallback((v) => {
     if (v === "BS") { setInput(i => i.slice(0, -1)); return; }
@@ -157,12 +158,16 @@ export default function VolleyCoder() {
   const handleNext = useCallback(() => {
     setInput(""); setResult(null);
     if (roundData.count > 0 && roundData.count % ROUND_SIZE === 0) {
-      setScreen("roundReview");
+      if (safeLevelFilter === 5 && roundData.correct === ROUND_SIZE) {
+        setScreen("master");
+      } else {
+        setScreen("roundReview");
+      }
     } else {
       setQIndex(i => i + 1);
       setScreen("game");
     }
-  }, [roundData.count]);
+  }, [roundData.count, roundData.correct, safeLevelFilter]);
 
   const handleContinueRound = useCallback(() => {
     setRoundData(r => ({ num: r.num + 1, correct: 0, xpGained: 0, count: 0 }));
@@ -232,6 +237,17 @@ export default function VolleyCoder() {
 
   if (screen === "ref") return shell(
     <ReferenceScreen onBack={() => setScreen("home")} />
+  );
+
+  if (screen === "master") return shell(
+    <MasterScreen
+      xp={xp} rank={rank} maxStreak={maxStreak}
+      roundXp={roundData.xpGained}
+      onHome={() => {
+        setRoundData({ num:1, correct:0, xpGained:0, count:0 });
+        setScreen("home");
+      }}
+    />
   );
 
   if (screen === "roundReview") return shell(
