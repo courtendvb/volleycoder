@@ -1,4 +1,4 @@
-import { C, SKILL_COLOR, SKILL_LABEL } from "../constants.js";
+import { C, SKILL_COLOR, SKILL_LABEL, TIME_LIMIT } from "../constants.js";
 import { expandCompound } from "../utils/gameUtils.js";
 
 export default function ResultScreen({ result, q, streak, onNext, onHome }) {
@@ -11,7 +11,7 @@ export default function ResultScreen({ result, q, streak, onNext, onHome }) {
 
       {result.timeout && (
         <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,51,68,0.1)",border:`1px solid ${C.red}`,borderRadius:20,padding:"4px 16px",fontSize:12,color:C.red,fontFamily:"monospace",letterSpacing:1}}>
-          ⏱ 入力遅延ミス — 10秒超過
+          ⏱ 入力遅延ミス — {TIME_LIMIT}秒超過
         </div>
       )}
 
